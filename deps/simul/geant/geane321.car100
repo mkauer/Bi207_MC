@@ -1,0 +1,3576 @@
++TITLE.
+C GEANE.CAR 3.21/05 26/11/99 11.40.52 CVSTOCAR RESTAURATION 
++PATCH, MATX55.
++DECK,  DCROSS, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE DCROSS(X,Y,Z)
+*     ========================
+*
+*     Double Precision Vector Product
+*
+*     Author: V.Innocente (Naples)
+*
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION ( A-H, O-Z )
++SELF.
+      DIMENSION X(3),Y(3),Z(3)
+*
+      Z(1) = X(2)*Y(3)-X(3)*Y(2)
+      Z(2) = X(3)*Y(1)-X(1)*Y(3)
+      Z(3) = X(1)*Y(2)-X(2)*Y(1)
+*
+      END
++DECK,  DDOT, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      DOUBLE PRECISION FUNCTION DDOT(X,Y)
+*     ===================================
+*
+*     Double Precision Scalar Product
+*
+*     Author: V.Innocente (Naples)
+*
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION ( A-H, O-Z )
++SELF.
+      DIMENSION X(3),Y(3)
+*
+      DDOT = X(1)*Y(1)+X(2)*Y(2)+X(3)*Y(3)
+*
+      END
++DECK,  DMM55, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE DMM55(A,B,C)
+C *** ---------------------------------------------                     05/07/81
+C *** MULTIPLICATION OF 5X5 MATRICES: A*B -> C.
+C *** FOR:I,J=1,5   C(I,J)=SUM:K=1,5(A(I,K)B(K,J))
+C *** NB: B AND C MAY WELL BE THE SAME MATRIX
+C
+C        Author: A. Haas (Freiburg University)
+C
+C *** ---------------------------------------------
+      DOUBLE PRECISION A,B,C,B1J,B2J,B3J,B4J,B5J
+      DIMENSION A(25),B(25),C(25)
+      DO 10 J5=5,25,5
+      B5J=B(J5)
+      J4=J5-1
+      B4J=B(J4)
+      J3=J4-1
+      B3J=B(J3)
+      J2=J3-1
+      B2J=B(J2)
+      J1=J2-1
+      B1J=B(J1)
+      C(J1)=A( 1)*B1J+A( 6)*B2J+A(11)*B3J+A(16)*B4J+A(21)*B5J
+      C(J2)=A( 2)*B1J+A( 7)*B2J+A(12)*B3J+A(17)*B4J+A(22)*B5J
+      C(J3)=A( 3)*B1J+A( 8)*B2J+A(13)*B3J+A(18)*B4J+A(23)*B5J
+      C(J4)=A( 4)*B1J+A( 9)*B2J+A(14)*B3J+A(19)*B4J+A(24)*B5J
+   10 C(J5)=A( 5)*B1J+A(10)*B2J+A(15)*B3J+A(20)*B4J+A(25)*B5J
+*
+      END
++DECK,  DNORM, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE DNORM(X,AX)
+*     ======================
+*
+*     Double Precision Vector Normalization
+*
+*     Author: V.Innocente (Naples)
+*
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION ( A-H, O-Z )
++SELF.
+      DIMENSION X(3)
+*
+      AX = SQRT(X(1)**2+X(2)**2+X(3)**2)
+      AX1 = 1./AX
+      X(1) = AX1*X(1)
+      X(2) = AX1*X(2)
+      X(3) = AX1*X(3)
+*
+      END
++DECK,  DSMT5T, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE DSMT5T(A,S,R)
+C *** ------------------------------------------------------            05/07/81
+C *** TRANSFORMATION OF SYMMETRIC 5X5 MATRIX S: A*S*AT -> R.
+C *** A IS A GENERAL 5X5 MATRIX WHEREAS S,R ARE SYMMETRIC
+C *** MATRICES STORED IN TRIANGULAR FORM. FOR:I,J=1,5
+C *** R(I,J) = SUM:K=1,5(SUM:L=1,5(A(I,L)*S(L,K)*A(J,K))).
+C *** NB: S AND R MAY WELL BE THE SAME MATRIX.
+C
+C        Author: A. Haas (Freiburg University)
+C
+C *** ------------------------------------------------------
+      DOUBLE PRECISION A,S,R,Q,T1,T2,T3,T4,T5
+      DIMENSION A(25),S(15),R(15),Q(15)
+      DO 5 I=1,15
+         Q(I)=S(I)
+    5 CONTINUE
+      K=1
+      DO 15 J=1,5
+         T1=A(J   )
+         T2=A(J+ 5)
+         T3=A(J+10)
+         T4=A(J+15)
+         T5=A(J+20)
+         DO 10 I=J,5
+            R(K)=A(I   )*(Q(1)*T1+Q(2)*T2+Q( 3)*T3+Q( 4)*T4+Q( 5)*T5)
+     +          +A(I+ 5)*(Q(2)*T1+Q(6)*T2+Q( 7)*T3+Q( 8)*T4+Q( 9)*T5)
+     +          +A(I+10)*(Q(3)*T1+Q(7)*T2+Q(10)*T3+Q(11)*T4+Q(12)*T5)
+     +          +A(I+15)*(Q(4)*T1+Q(8)*T2+Q(11)*T3+Q(13)*T4+Q(14)*T5)
+     +          +A(I+20)*(Q(5)*T1+Q(9)*T2+Q(12)*T3+Q(14)*T4+Q(15)*T5)
+            K=K+1
+   10    CONTINUE
+   15 CONTINUE
+*
+      END
++DECK,  RMM55, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+*       MATRIX MULTIPLICATION 5 BY 5.
+
+      SUBROUTINE RMM55(A,B,C)
+C *** ---------------------------------------------                     05/07/81
+C *** MULTIPLICATION OF 5X5 MATRICES: A*B -> C.
+C *** FOR:I,J=1,5   C(I,J)=SUM:K=1,5(A(I,K)B(K,J))
+C *** NB: B AND C MAY WELL BE THE SAME MATRIX
+C
+C        Author: A. Haas (Freiburg University)
+C
+C *** ---------------------------------------------
+      DIMENSION A(25),B(25),C(25)
+      DO 10 J5=5,25,5
+         B5J=B(J5)
+         J4=J5-1
+         B4J=B(J4)
+         J3=J4-1
+         B3J=B(J3)
+         J2=J3-1
+         B2J=B(J2)
+         J1=J2-1
+         B1J=B(J1)
+         C(J1)=A( 1)*B1J+A( 6)*B2J+A(11)*B3J+A(16)*B4J+A(21)*B5J
+         C(J2)=A( 2)*B1J+A( 7)*B2J+A(12)*B3J+A(17)*B4J+A(22)*B5J
+         C(J3)=A( 3)*B1J+A( 8)*B2J+A(13)*B3J+A(18)*B4J+A(23)*B5J
+         C(J4)=A( 4)*B1J+A( 9)*B2J+A(14)*B3J+A(19)*B4J+A(24)*B5J
+         C(J5)=A( 5)*B1J+A(10)*B2J+A(15)*B3J+A(20)*B4J+A(25)*B5J
+   10 CONTINUE
+*
+      END
++DECK,  RSMT5T, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+*      SYMMETRIC MATRIX TRANSFORMATION 5 BY 5 TRIANGULAR.
+
+      SUBROUTINE RSMT5T(A,S,R)
+C *** ------------------------------------------------------            05/07/81
+C *** TRANSFORMATION OF SYMMETRIC 5X5 MATRIX S: A*S*AT -> R.
+C *** A IS A GENERAL 5X5 MATRIX WHEREAS S,R ARE SYMMETRIC
+C *** MATRICES STORED IN TRIANGULAR FORM. FOR:I,J=1,5
+C *** R(I,J) = SUM:K=1,5(SUM:L=1,5(A(I,L)*S(L,K)*A(J,K))).
+C *** NB: S AND R MAY WELL BE THE SAME MATRIX.
+C
+C        Author: A. Haas (Freiburg University)
+C
+C *** ------------------------------------------------------
+      DIMENSION A(25),S(15),R(15),Q(15)
+      DO 5 I=1,15
+         Q(I)=S(I)
+    5 CONTINUE
+      K=1
+      DO 15 J=1,5
+         T1=A(J   )
+         T2=A(J+ 5)
+         T3=A(J+10)
+         T4=A(J+15)
+         T5=A(J+20)
+         DO 10 I=J,5
+            R(K)=A(I   )*(Q(1)*T1+Q(2)*T2+Q( 3)*T3+Q( 4)*T4+Q( 5)*T5)
+     +          +A(I+ 5)*(Q(2)*T1+Q(6)*T2+Q( 7)*T3+Q( 8)*T4+Q( 9)*T5)
+     +          +A(I+10)*(Q(3)*T1+Q(7)*T2+Q(10)*T3+Q(11)*T4+Q(12)*T5)
+     +          +A(I+15)*(Q(4)*T1+Q(8)*T2+Q(11)*T3+Q(13)*T4+Q(14)*T5)
+     +          +A(I+20)*(Q(5)*T1+Q(9)*T2+Q(12)*T3+Q(14)*T4+Q(15)*T5)
+            K=K+1
+   10    CONTINUE
+   15 CONTINUE
+*
+      END
++DECK,  SSMT5T, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE SSMT5T(A,S,R)
+C *** ------------------------------------------------------            05/07/81
+C *** TRANSFORMATION OF SYMMETRIC 5X5 MATRIX S: A*S*AT -> R.
+C *** A IS A GENERAL 5X5 MATRIX WHEREAS S,R ARE SYMMETRIC
+C *** MATRICES STORED IN TRIANGULAR FORM. FOR:I,J=1,5
+C *** R(I,J) = SUM:K=1,5(SUM:L=1,5(A(I,L)*S(L,K)*A(J,K))).
+C *** NB: S AND R MAY WELL BE THE SAME MATRIX.
+C
+C        Author: A. Haas (Freiburg University)
+C
+C *** ------------------------------------------------------
++SELF, IF=-SINGLE.
+      DOUBLE PRECISION A,S,R,Q,T1,T2,T3,T4,T5
++SELF.
+      DIMENSION A(25),S(15),R(15),Q(15)
+      DO 5 I=1,15
+         Q(I)=S(I)
+    5 CONTINUE
+      K=1
+      DO 15 J=1,5
+         T1=A(J   )
+         T2=A(J+ 5)
+         T3=A(J+10)
+         T4=A(J+15)
+         T5=A(J+20)
+         DO 10 I=J,5
+            R(K)=A(I   )*(Q(1)*T1+Q(2)*T2+Q( 3)*T3+Q( 4)*T4+Q( 5)*T5)
+     +          +A(I+ 5)*(Q(2)*T1+Q(6)*T2+Q( 7)*T3+Q( 8)*T4+Q( 9)*T5)
+     +          +A(I+10)*(Q(3)*T1+Q(7)*T2+Q(10)*T3+Q(11)*T4+Q(12)*T5)
+     +          +A(I+15)*(Q(4)*T1+Q(8)*T2+Q(11)*T3+Q(13)*T4+Q(14)*T5)
+     +          +A(I+20)*(Q(5)*T1+Q(9)*T2+Q(12)*T3+Q(14)*T4+Q(15)*T5)
+            K=K+1
+   10    CONTINUE
+   15 CONTINUE
+*
+      END
++DECK,  XMM55, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE XMM55(A,B,C)
+C *** ---------------------------------------------                     05/07/81
+C *** MULTIPLICATION OF 5X5 MATRICES: A*B -> C.
+C *** FOR:I,J=1,5   C(I,J)=SUM:K=1,5(A(I,K)B(K,J))
+C *** NB: B AND C MAY WELL BE THE SAME MATRIX
+C
+C        Author: A. Haas (Freiburg University)
+C
+C *** ---------------------------------------------
++SELF, IF=-SINGLE.
+      DOUBLE PRECISION A,B,C,B1J,B2J,B3J,B4J,B5J
++SELF.
+      DIMENSION A(25),B(25),C(25)
+      DO 10 J5=5,25,5
+         B5J=B(J5)
+         J4=J5-1
+         B4J=B(J4)
+         J3=J4-1
+         B3J=B(J3)
+         J2=J3-1
+         B2J=B(J2)
+         J1=J2-1
+         B1J=B(J1)
+         C(J1)=A( 1)*B1J+A( 6)*B2J+A(11)*B3J+A(16)*B4J+A(21)*B5J
+         C(J2)=A( 2)*B1J+A( 7)*B2J+A(12)*B3J+A(17)*B4J+A(22)*B5J
+         C(J3)=A( 3)*B1J+A( 8)*B2J+A(13)*B3J+A(18)*B4J+A(23)*B5J
+         C(J4)=A( 4)*B1J+A( 9)*B2J+A(14)*B3J+A(19)*B4J+A(24)*B5J
+         C(J5)=A( 5)*B1J+A(10)*B2J+A(15)*B3J+A(20)*B4J+A(25)*B5J
+   10 CONTINUE
+*
+      END
++PATCH, ERPREMC.
++DECK,  TRPRFN, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE TRPRFN(X1,P1,H1,X2,P2,H2,CH,XL,R,MVAR,IFLAG,ITRAN,IERR)
+************************************************************************
+*
+*
+*     SUBR. TRPRFN(X1,P1,H1,X2,P2,H2,CH,XL,*R*,MVAR,IFLAG,ITRAN,IERR*)
+*
+*     Origin W.Wittek    EMCSW/81/18
+*
+*     Finite step length case coded by V.Innocente ( Feb. 88 )
+*
+*     code improved:                   V.Innocente ( April. 90 )
+*                   inline code replaces external function
+*     code improved:                   V.Innocente ( January 91 )
+*                   effect of energy loss added
+*
+*_______________________________________________________________________
+*
+* *** ERROR PROPAGATION ALONG A PARTICLE TRAJECTORY IN A MAGNETIC FIELD
+*     ROUTINE ASSUMES THAT IN THE INTERVAL (X1,X2) THE QUANTITIES 1/P
+*     AND (HX,HY,HZ) ARE CONSTANT.
+*
+* *** IFLAG  =  -1   INITIALIZATION, TRANSFORMATION OF ERROR MATRIX FROM
+*                    EXTERNAL TO SC VARIABLES
+*            =   0   ERROR PROPAGATION FROM X1 TO X2
+*            =   1   TRANSFORMATION OF ERROR MATRIX FROM SC TO
+*                    EXTERNAL VARIABLES
+*
+*     ITRAN          USED FOR IFLAG = 0 OR 1 ONLY
+*            =   0   TRANSFORMATION MATRIX IS UPDATED ,BUT ERROR MATRIX IS NOT
+*                    TRANSFORMED
+*           =    1   TRANSF. MATRIX IS UPDATED  AND ERROR MATRIX IS TRANSFORMED
+*
+*     MVAR           SPECIFIES TYPE OF EXTERNAL VARIABLES
+*            =   0   ( 1/P,LAMBDA,PHI,YT, ZT ;   SC   )
+*            =   1   ( 1/P,  Y',  Z',  Y,  Z ; SPLINE )
+*
+* *** X1, P1, H1     X,Y,Z COMPONENTS OF POSITION, MOMENTUM AND MAGNETIC   INPUT
+*                    FIELD VECTOR/GRADIENT AT STARTING POINT OF INTERVAL
+*     X2, P2, H2     ......  AT END POINT OF INTERVAL                      INPUT
+*     CH             CHARGE OF PARTICLE                                    INPUT
+*     XL             PATHLENGTH FROM X1 TO X2   ( NEGATIVE IF OPPOSITE
+*                    TO ACTUAL MOVEMENT OF PARTICLE )                      INPUT
+*     R              ERROR MATRIX  (TRIANGLE)                       INPUT/OUTPUT
+*     B              5 * 5 TRANSFORMATION MATRIX FOR ERRORS IN
+*                    SC VARIABLES                                         OUTPUT
+*
+* *** IERR   =  1    ILLEGAL VALUE OF MVAR                                OUTPUT
+*               2    MOMENTUM IS ZERO
+*               3    H*ALFA/P AT X1 AND X2 DIFFER TOO MUCH
+*               4    PARTICLE MOVES IN Z - DIRECTION
+*
+************************************************************************
+*
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL  X1,P1,H1,X2,P2,H2,R,CH,PS,PC,XL,SPX
++SELF.
++CDE, TRCOM3.
++CDE, GCUNIT.
+      DIMENSION X1(3),P1(3),H1(9),X2(3),P2(3),H2(9)
+      DIMENSION R(15),PS(3),PC(3)
+*
+      DIMENSION T1(3),T2(3),U1(3),U2(3),V1(3),V2(3),HN(9)
+      DIMENSION AN1(3),AN2(3),DX(3)
+      DIMENSION HV1(3),HU1(3)
+*
+      SAVE INIT,DELHP6,CFACT8
+*
+      DATA INIT/0/
++SELF, IF=-SINGLE.
+      DATA DELHP6/300.D0/
+*
+      DATA CFACT8 / 2.997925 D-4 /
++SELF, IF=SINGLE.
+      DATA DELHP6/300./
+*
+      DATA CFACT8 / 2.997925 E-4 /
++SELF.
+*
+*____________________________________________________________________
+*
+      IERR=0
+      IF(IFLAG) 10, 20, 80
+*
+* *** TRANSFORM ERROR MATRIX FROM EXTERNAL TO INTERNAL VARIABLES;
+*
+   10 NEW=1
+      IF(MVAR.NE.1) GO TO 11
+      PA1=SQRT(P1(1)**2+P1(2)**2+P1(3)**2)
+      IF(PA1.EQ.0.) GO TO 902
+      PS(1)=1./PA1
+      IF(P1(1).EQ.0.) GO TO 904
+      PS(2)=P1(2)/P1(1)
+      PS(3)=P1(3)/P1(1)
+      SPX=1.
+      IF(P1(1).LT.0.) SPX=-1.
+      CALL TRSPSC(PS,R,PC,R,H1,CH,IERR,SPX)
+      GO TO 19
+*
+   11 IF(MVAR.NE.0) GO TO 901
+   19 GO TO 900
+*
+* *** ERROR PROPAGATION ON A HELIX ASSUMING SC VARIABLES
+
+*
+   20 PA1=SQRT(P1(1)**2+P1(2)**2+P1(3)**2)
+      PA2=SQRT(P2(1)**2+P2(2)**2+P2(3)**2)
+      IF(PA1*PA2.EQ.0.) GO TO 902
+C      DPA = PA2 - PA1
+      PM1=1./PA1
+      PM2=1./PA2
+      DPM = PM2 - PM1
+*
+      DO 201 I=1,3
+        T1(I) = P1(I)*PM1
+        T2(I) = P2(I)*PM2
+201   CONTINUE
+*
+      SINL=T2(3)
+      SINL0=T1(3)
+*
+      COSL=SQRT(ABS(1.-SINL**2))
+      IF(COSL.EQ.0.) GO TO 904
+      COSL1=1./COSL
+      COSL0=SQRT(ABS(1.-SINL0**2))
+*
+* *** DEFINE TRANSFORMATION MATRIX BETWEEN X1 AND X2 FOR
+* *** NEUTRAL PARTICLE OR FIELDFREE REGION
+*
+      DO 26 I=1,5
+         DO 15 K=1,5
+            A(I,K)=0.
+   15    CONTINUE
+         A(I,I)=1.
+   26 CONTINUE
+      A(4,3)=XL*COSL
+      A(5,2)=XL
+*
+      IF(CH.EQ.0.) GO TO 45
+      HA1=SQRT(H1(1)**2+H1(2)**2+H1(3)**2)
+      HA2=SQRT(H2(1)**2+H2(2)**2+H2(3)**2)
+      HAM1=HA1*PM1
+      HAM2=HA2*PM2
+      HAMX=MAX(HAM1,HAM2)
+      IF(HAMX.EQ.0.) GO TO 45
+*
+*
+*
+* *** CHECK WHETHER H*ALFA/P IS TOO DIFFERENT AT X1 AND X2
+*
+*
+      IF(HA2.NE.0.) THEN
+         GAM=(H2(1)*T2(1)+H2(2)*T2(2)+H2(3)*T2(3))/HA2
+      ELSE
+         GAM=(H1(1)*T1(1)+H1(2)*T1(2)+H1(3)*T1(3))/HA1
+      ENDIF
+*
+      ALFA2=1.-GAM**2
+*
+      DH2=(H1(1)*PM1-H2(1)*PM2)**2+
+     1    (H1(2)*PM1-H2(2)*PM2)**2+
+     1    (H1(3)*PM1-H2(3)*PM2)**2
+      IF(DH2*ALFA2.GT.DELHP6**2) GO TO 903
+*
+* *** DEFINE AVERAGE MAGNETIC FIELD AND GRADIENT
+*
+      PM12=(PM1+PM2)*0.5
+      P12=1./(2.*PM12)
+      HN(1)=(H1(1)*PM1+H2(1)*PM2)*P12*CH*CFACT8
+      HN(2)=(H1(2)*PM1+H2(2)*PM2)*P12*CH*CFACT8
+      HN(3)=(H1(3)*PM1+H2(3)*PM2)*P12*CH*CFACT8
+CC    HN(4)=(H1(4)*PM1+H2(4)*PM2)*P12*CH*CFACT8
+CC    HN(5)=(H1(5)*PM1+H2(5)*PM2)*P12*CH*CFACT8
+CC    HN(6)=(H1(6)*PM1+H2(6)*PM2)*P12*CH*CFACT8
+CC    HN(7)=(H1(7)*PM1+H2(7)*PM2)*P12*CH*CFACT8
+CC    HN(8)=(H1(8)*PM1+H2(8)*PM2)*P12*CH*CFACT8
+CC    HN(9)=(H1(9)*PM1+H2(9)*PM2)*P12*CH*CFACT8
+*
+      HM = SQRT(HN(1)**2+HN(2)**2+HN(3)**2)
+      OVER = 1./HM
+      HN(1) = OVER*HN(1)
+      HN(2) = OVER*HN(2)
+      HN(3) = OVER*HN(3)
+      PAV = .5*(PA1+PA2)
+      Q = - HM/PAV
+      THETA = Q*XL
+      SINT = SIN(THETA)
+      COST = COS(THETA)
+      GAMMA=HN(1)*T2(1)+HN(2)*T2(2)+HN(3)*T2(3)
+      AN2(1) = HN(2)*T2(3)-HN(3)*T2(2)
+      AN2(2) = HN(3)*T2(1)-HN(1)*T2(3)
+      AN2(3) = HN(1)*T2(2)-HN(2)*T2(1)
+*
+      AU = 1./SQRT(T1(1)**2+T1(2)**2)
+      U1(1) = -AU*T1(2)
+      U1(2) =  AU*T1(1)
+      U1(3) =  0.D0
+      V1(1) = -T1(3)*U1(2)
+      V1(2) =  T1(3)*U1(1)
+      V1(3) =  T1(1)*U1(2)-T1(2)*U1(1)
+*
+      AU = 1./SQRT(T2(1)**2+T2(2)**2)
+      U2(1) = -AU*T2(2)
+      U2(2) =  AU*T2(1)
+      U2(3) =  0.D0
+      V2(1) = -T2(3)*U2(2)
+      V2(2) =  T2(3)*U2(1)
+      V2(3) =  T2(1)*U2(2)-T2(2)*U2(1)
+*
+      DX(1) = X1(1) - X2(1)
+      DX(2) = X1(2) - X2(2)
+      DX(3) = X1(3) - X2(3)
+*
+*
+* *** COMPLETE TRANSFORMATION MATRIX BETWEEN ERRORS AT X1 AND X2
+* *** FIELD GRADIENT PERPENDICULAR TO TRACK IS PRESENTLY NOT
+* *** TAKEN INTO ACCOUNT
+*
+   30 CONTINUE
+      QP  = Q*PAV
+      ANV = -(HN(1)*U2(1)+HN(2)*U2(2)            )
+      ANU =  (HN(1)*V2(1)+HN(2)*V2(2)+HN(3)*V2(3))
+      OMCOST = 1.-COST
+      TMSINT = THETA-SINT
+*
+      HU1(1) =            -HN(3)*U1(2)
+      HU1(2) = HN(3)*U1(1)
+      HU1(3) = HN(1)*U1(2)-HN(2)*U1(1)
+*
+      HV1(1) = HN(2)*V1(3)-HN(3)*V1(2)
+      HV1(2) = HN(3)*V1(1)-HN(1)*V1(3)
+      HV1(3) = HN(1)*V1(2)-HN(2)*V1(1)
+*
+***   1/P
+*
+      A(1,1) = 1.-DPM*PAV*(1.+(T2(1)*DX(1)+T2(2)*DX(2)+T2(3)*DX(3))/XL)
+     +           +2.*DPM*PAV
+*
+      A(1,2) =  -DPM/THETA*
+     1           ( TMSINT*GAMMA*(HN(1)*V1(1)+HN(2)*V1(2)+HN(3)*V1(3)) +
+     2             SINT*(V1(1)*T2(1)+V1(2)*T2(2)+V1(3)*T2(3)) +
+     3             OMCOST*(HV1(1)*T2(1)+HV1(2)*T2(2)+HV1(3)*T2(3)) )
+*
+      A(1,3) =  -COSL0*DPM/THETA*
+     1           ( TMSINT*GAMMA*(HN(1)*U1(1)+HN(2)*U1(2)            ) +
+     2             SINT*(U1(1)*T2(1)+U1(2)*T2(2)            ) +
+     3             OMCOST*(HU1(1)*T2(1)+HU1(2)*T2(2)+HU1(3)*T2(3)) )
+*
+      A(1,4) =  -DPM/XL*(U1(1)*T2(1)+U1(2)*T2(2)            )
+*
+      A(1,5) =  -DPM/XL*(V1(1)*T2(1)+V1(2)*T2(2)+V1(3)*T2(3))
+*
+***   Lambda
+*
+      A(2,1) = -QP*ANV*(T2(1)*DX(1)+T2(2)*DX(2)+T2(3)*DX(3))
+     +         *(1.+DPM*PAV)
+*
+      A(2,2) = COST*(V1(1)*V2(1)+V1(2)*V2(2)+V1(3)*V2(3)) +
+     +         SINT*(HV1(1)*V2(1)+HV1(2)*V2(2)+HV1(3)*V2(3)) +
+     1         OMCOST*(HN(1)*V1(1)+HN(2)*V1(2)+HN(3)*V1(3))*
+     A                (HN(1)*V2(1)+HN(2)*V2(2)+HN(3)*V2(3)) +
+     2         ANV*( -SINT*(V1(1)*T2(1)+V1(2)*T2(2)+V1(3)*T2(3)) +
+     3         OMCOST*(V1(1)*AN2(1)+V1(2)*AN2(2)+V1(3)*AN2(3)) -
+     4         TMSINT*GAMMA*(HN(1)*V1(1)+HN(2)*V1(2)+HN(3)*V1(3)) )
+*
+      A(2,3) = COST*(U1(1)*V2(1)+U1(2)*V2(2)            ) +
+     +         SINT*(HU1(1)*V2(1)+HU1(2)*V2(2)+HU1(3)*V2(3)) +
+     1         OMCOST*(HN(1)*U1(1)+HN(2)*U1(2)            )*
+     A                (HN(1)*V2(1)+HN(2)*V2(2)+HN(3)*V2(3)) +
+     2         ANV*( -SINT*(U1(1)*T2(1)+U1(2)*T2(2)            ) +
+     3         OMCOST*(U1(1)*AN2(1)+U1(2)*AN2(2)             ) -
+     4         TMSINT*GAMMA*(HN(1)*U1(1)+HN(2)*U1(2)            ) )
+      A(2,3) = COSL0*A(2,3)
+*
+      A(2,4) = -Q*ANV*(U1(1)*T2(1)+U1(2)*T2(2)            )
+*
+      A(2,5) = -Q*ANV*(V1(1)*T2(1)+V1(2)*T2(2)+V1(3)*T2(3))
+*
+***   Phi
+*
+      A(3,1) = -QP*ANU*(T2(1)*DX(1)+T2(2)*DX(2)+T2(3)*DX(3))*COSL1
+     +         *(1.+DPM*PAV)
+*
+      A(3,2) = COST*(V1(1)*U2(1)+V1(2)*U2(2)            ) +
+     +         SINT*(HV1(1)*U2(1)+HV1(2)*U2(2)             ) +
+     1         OMCOST*(HN(1)*V1(1)+HN(2)*V1(2)+HN(3)*V1(3))*
+     A                (HN(1)*U2(1)+HN(2)*U2(2)            ) +
+     2         ANU*( -SINT*(V1(1)*T2(1)+V1(2)*T2(2)+V1(3)*T2(3)) +
+     3         OMCOST*(V1(1)*AN2(1)+V1(2)*AN2(2)+V1(3)*AN2(3)) -
+     4         TMSINT*GAMMA*(HN(1)*V1(1)+HN(2)*V1(2)+HN(3)*V1(3)) )
+      A(3,2) = COSL1*A(3,2)
+*
+      A(3,3) = COST*(U1(1)*U2(1)+U1(2)*U2(2)            ) +
+     +         SINT*(HU1(1)*U2(1)+HU1(2)*U2(2)             ) +
+     1         OMCOST*(HN(1)*U1(1)+HN(2)*U1(2)            )*
+     A                (HN(1)*U2(1)+HN(2)*U2(2)            ) +
+     2         ANU*( -SINT*(U1(1)*T2(1)+U1(2)*T2(2)            ) +
+     3         OMCOST*(U1(1)*AN2(1)+U1(2)*AN2(2)             ) -
+     4         TMSINT*GAMMA*(HN(1)*U1(1)+HN(2)*U1(2)            ) )
+      A(3,3) = COSL1*COSL0*A(3,3)
+*
+      A(3,4) = -Q*ANU*(U1(1)*T2(1)+U1(2)*T2(2)            )*COSL1
+*
+      A(3,5) = -Q*ANU*(V1(1)*T2(1)+V1(2)*T2(2)+V1(3)*T2(3))*COSL1
+*
+***   Yt
+*
+      A(4,1) = PAV*(U2(1)*DX(1)+U2(2)*DX(2)            )
+     +         *(1.+DPM*PAV)
+*
+      A(4,2) = (   SINT*(V1(1)*U2(1)+V1(2)*U2(2)            ) +
+     1           OMCOST*(HV1(1)*U2(1)+HV1(2)*U2(2)             ) +
+     2           TMSINT*(HN(1)*U2(1)+HN(2)*U2(2)            )*
+     3                  (HN(1)*V1(1)+HN(2)*V1(2)+HN(3)*V1(3)) )/Q
+*
+      A(4,3) = (   SINT*(U1(1)*U2(1)+U1(2)*U2(2)            ) +
+     1           OMCOST*(HU1(1)*U2(1)+HU1(2)*U2(2)             ) +
+     2           TMSINT*(HN(1)*U2(1)+HN(2)*U2(2)            )*
+     3                  (HN(1)*U1(1)+HN(2)*U1(2)            ) )*COSL0/Q
+*
+      A(4,4) = (U1(1)*U2(1)+U1(2)*U2(2)            )
+*
+      A(4,5) = (V1(1)*U2(1)+V1(2)*U2(2)            )
+*
+***   Zt
+*
+      A(5,1) = PAV*(V2(1)*DX(1)+V2(2)*DX(2)+V2(3)*DX(3))
+     +         *(1.+DPM*PAV)
+*
+      A(5,2) = (   SINT*(V1(1)*V2(1)+V1(2)*V2(2)+V1(3)*V2(3)) +
+     1           OMCOST*(HV1(1)*V2(1)+HV1(2)*V2(2)+HV1(3)*V2(3)) +
+     2           TMSINT*(HN(1)*V2(1)+HN(2)*V2(2)+HN(3)*V2(3))*
+     3                  (HN(1)*V1(1)+HN(2)*V1(2)+HN(3)*V1(3)) )/Q
+*
+      A(5,3) = (   SINT*(U1(1)*V2(1)+U1(2)*V2(2)            ) +
+     1           OMCOST*(HU1(1)*V2(1)+HU1(2)*V2(2)+HU1(3)*V2(3)) +
+     2           TMSINT*(HN(1)*V2(1)+HN(2)*V2(2)+HN(3)*V2(3))*
+     3                  (HN(1)*U1(1)+HN(2)*U1(2)            ) )*COSL0/Q
+*
+      A(5,4) = (U1(1)*V2(1)+U1(2)*V2(2)            )
+*
+      A(5,5) = (V1(1)*V2(1)+V1(2)*V2(2)+V1(3)*V2(3))
+   45 CONTINUE
+*
+* *** NEW = 0  TRANSFORMATION MATRIX IS UPDATED
+*           1  TRANSFORMATION MATRIX IS INITIALIZED
+*
+      IF(NEW.EQ.0) GO TO 23
+      NEW=0
+      DO 25 I=1,5
+         DO 24 K=1,5
+            B(I,K)=A(I,K)
+   24    CONTINUE
+   25 CONTINUE
+      GO TO 27
+   23 CONTINUE
+*
+      CALL XMM55(A,B,B)
+*
+   27 CONTINUE
+   80 IF(ITRAN.EQ.0) GO TO 90
+*
+*
+      J=0
+      DO 22 I=1,5
+         DO 21 K=I,5
+            J=J+1
+            S(J)=R(J)
+   21    CONTINUE
+   22 CONTINUE
+*
+*
+* *** TRANSFORM ERROR MATRIX
+*
+      CALL SSMT5T(B,S,S)
+*
+      NEW=1
+
+      J=0
+      DO 41 I=1,5
+         DO 40 K=I,5
+            J=J+1
+            R(J)=S(J)
+   40    CONTINUE
+   41 CONTINUE
+*
+   90 IF(IFLAG.LE.0) GO TO 900
+*
+*
+* *** TRANSFORM ERROR MATRIX FROM INTERNAL TO EXTERNAL VARIABLES;
+*
+*
+      NEW=1
+      IF(MVAR.NE.1) GO TO 91
+      PC(1)=PM2
+      PC(2)=ASIN(P2(3)*PC(1))
+      IF (ABS (P2(1)) .LT. 1.E-30) P2(1) = 1.E-30
+      PC(3)=ATAN2(P2(2),P2(1))
+      CALL TRSCSP(PC,R,PS,R,H2,CH,IERR,SPX)
+      GO TO 900
+*
+   91 IF(MVAR.NE.0) GO TO 901
+      GO TO 900
+*
+* *** ERROR EXITS
+*
+  901 IERR=1
+      GO TO 999
+  902 IERR=2
+      GO TO 999
+  903 IERR=3
+C     IF(INIT.NE.0) GO TO 30
+*     WRITE (LOUT, 998) DH2,ALFA2,XL
+  998 FORMAT('0',' *** S/R TRPROP   DELTA(H*ALFA/P)',5X
+     1,'EXCEEDS TOLERANCE    '/'0',3E12.5//' **********    ',///)
+      INIT=1
+      GO TO 30
+  904 IERR=4
+  999 WRITE (LOUT, 1000) IERR
+ 1000 FORMAT(1H ,' *** S/R ERPROP   IERR =',I5)
+*
+  900 CONTINUE
+      END
+
++DECK,  TRPROP, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+*      MODIFIED FOR MAGFIELD GRADIENT 02-APR-82
+
+C
+      SUBROUTINE TRPROP(X1,P1,H1,X2,P2,H2,CH,XL,R,MVAR,IFLAG,ITRAN,IERR)
+C
+C *** ERROR PROPAGATION ALONG A PARTICLE TRAJECTORY IN A MAGNETIC FIELD
+C     ROUTINE ASSUMES THAT IN THE INTERVAL (X1,X2) THE QUANTITIES 1/P
+C     AND (HX,HY,HZ) ARE RATHER CONSTANT. DELTA(PHI) MUST NOT BE TOO LARGE
+C
+C     Authors: A. Haas and W. Wittek
+C
+C *** IFLAG  =  -1   INITIALIZATION, TRANSFORMATION OF ERROR MATRIX FROM
+C                    EXTERNAL TO SC VARIABLES
+C            =   0   ERROR PROPAGATION FROM X1 TO X2
+C            =   1   TRANSFORMATION OF ERROR MATRIX FROM SC TO
+C                    EXTERNAL VARIABLES
+C
+C     ITRAN          USED FOR IFLAG = 0 OR 1 ONLY
+C            =   0   TRANSFORMATION MATRIX IS UPDATED ,BUT ERROR MATRIX IS NOT
+C                    TRANSFORMED
+C           =    1   TRANSF. MATRIX IS UPDATED  AND ERROR MATRIX IS TRANSFORMED
+C
+C     MVAR           SPECIFIES TYPE OF EXTERNAL VARIABLES
+C            =   0   ( 1/P,LAMBDA,PHI,YT, ZT ;   SC   )
+C            =   1   ( 1/P,  Y',  Z',  Y,  Z ; SPLINE )
+C
+C *** X1, P1, H1     X,Y,Z COMPONENTS OF POSITION, MOMENTUM AND MAGNETIC   INPUT
+C                    FIELD VECTOR/GRADIENT AT STARTING POINT OF INTERVAL
+C     X2, P2, H2     ......  AT END POINT OF INTERVAL                      INPUT
+C     CH             CHARGE OF PARTICLE                                    INPUT
+C     XL             PATHLENGTH FROM X1 TO X2   ( NEGATIVE IF OPPOSITE
+C                    TO ACTUAL MOVEMENT OF PARTICLE )                      INPUT
+C     R              ERROR MATRIX  (TRIANGLE)                       INPUT/OUTPUT
+C     B              5 * 5 TRANSFORMATION MATRIX FOR ERRORS IN
+C                    SC VARIABLES                                         OUTPUT
+C
+C *** IERR   =  1    ILLEGAL VALUE OF MVAR                                OUTPUT
+C               2    MOMENTUM IS ZERO
+C               3    H*ALFA/P AT X1 AND X2 DIFFER TOO MUCH
+C                    OR DELTA PHI IS TOO LARGE
+C               4    PARTICLE MOVES IN Z - DIRECTION
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL  X1,P1,H1,X2,P2,H2,R,CH,PS,PC,XL,SPX
++SELF.
++CDE, TRCOM3.
++CDE, GCUNIT.
+      DIMENSION X1(3),P1(3),H1(9),X2(3),P2(3),H2(9)
+      DIMENSION R(15),PS(3),PC(3),HN(9)
+C
+      SAVE INIT,DELHP6,CFACT8
+*
+      DATA INIT/0/
++SELF, IF=SINGLE.
+      DATA DELHP6/300./,DELFI6/0.1/
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA DELHP6/300.D0/,DELFI6/0.1D0/
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+C
+      IERR=0
+      IF(IFLAG) 10, 20, 80
+C
+C *** TRANSFORM ERROR MATRIX FROM EXTERNAL TO INTERNAL VARIABLES;
+C
+   10 NEW=1
+      IF(MVAR.NE.1) GO TO 11
+      PA1=SQRT(P1(1)**2+P1(2)**2+P1(3)**2)
+      IF(PA1.EQ.0.) GO TO 902
+      PS(1)=1./PA1
+      IF(P1(1).EQ.0.) GO TO 904
+      PS(2)=P1(2)/P1(1)
+      PS(3)=P1(3)/P1(1)
+      SPX=1.
+      IF(P1(1).LT.0.) SPX=-1.
+      CALL TRSPSC(PS,R,PC,R,H1,CH,IERR,SPX)
+      GO TO 19
+C
+   11 IF(MVAR.NE.0) GO TO 901
+   19 GO TO 900
+C
+C *** ERROR PROPAGATION ON A HELIX ASSUMING SC VARIABLES
+
+C
+   20 PA1=SQRT(P1(1)**2+P1(2)**2+P1(3)**2)
+      PA2=SQRT(P2(1)**2+P2(2)**2+P2(3)**2)
+      IF(PA1*PA2.EQ.0.) GO TO 902
+      PM1=1./PA1
+      PM2=1./PA2
+C
+      TN(1)=P1(1)+P2(1)
+      TN(2)=P1(2)+P2(2)
+      TN(3)=P1(3)+P2(3)
+      PM12=1./SQRT(TN(1)**2+TN(2)**2+TN(3)**2)
+      TN(1)=TN(1)*PM12
+      TN(2)=TN(2)*PM12
+      TN(3)=TN(3)*PM12
+C
+      SINL=TN(3)
+      COSL=SQRT(ABS(1.-SINL**2))
+      IF(COSL.EQ.0.) GO TO 904
+      COSL1=1./COSL
+      SINP=TN(2)*COSL1
+      COSP=TN(1)*COSL1
+C
+C *** DEFINE TRANSFORMATION MATRIX BETWEEN X1 AND X2 FOR
+C *** NEUTRAL PARTICLE OR FIELDFREE REGION
+C
+      DO 26 I=1,5
+         DO 15 K=1,5
+            A(I,K)=0.
+   15    CONTINUE
+         A(I,I)=1.
+   26 CONTINUE
+      A(4,3)=XL*COSL
+      A(5,2)=XL
+C
+      IF(CH.EQ.0.) GO TO 45
+      HA1=SQRT(H1(1)**2+H1(2)**2+H1(3)**2)
+      HA2=SQRT(H2(1)**2+H2(2)**2+H2(3)**2)
+      HAM1=HA1*PM1
+      HAM2=HA2*PM2
+      HAMX = MAX(HAM1,HAM2)
+      IF(HAMX.EQ.0.) GO TO 45
+C
+C *** DEFINE AVERAGE MAGNETIC FIELD AND GRADIENT
+C
+      PM12=(PM1+PM2)*0.5
+      P12=1./(2.*PM12)
+      HN(1)=(H1(1)*PM1+H2(1)*PM2)*P12*CH*CFACT8
+      HN(2)=(H1(2)*PM1+H2(2)*PM2)*P12*CH*CFACT8
+      HN(3)=(H1(3)*PM1+H2(3)*PM2)*P12*CH*CFACT8
+      HN(4)=(H1(4)*PM1+H2(4)*PM2)*P12*CH*CFACT8
+      HN(5)=(H1(5)*PM1+H2(5)*PM2)*P12*CH*CFACT8
+      HN(6)=(H1(6)*PM1+H2(6)*PM2)*P12*CH*CFACT8
+      HN(7)=(H1(7)*PM1+H2(7)*PM2)*P12*CH*CFACT8
+      HN(8)=(H1(8)*PM1+H2(8)*PM2)*P12*CH*CFACT8
+      HN(9)=(H1(9)*PM1+H2(9)*PM2)*P12*CH*CFACT8
+C
+      B0=HN(1)*COSP+HN(2)*SINP
+      B2=-HN(1)*SINP+HN(2)*COSP
+      B3=-B0*SINL+HN(3)*COSL
+      TGL=SINL*COSL1
+C
+C
+C *** CHECK WHETHER H*ALFA/P IS TOO DIFFERENT AT X1 AND X2
+C     AND WHETHER CHANGE OF TRACK DIRECTION DUE TO MAG.FIELD IS TOO LARGE
+C
+C
+      IF(HA2.EQ.0.) GO TO 29
+
+      GAM=(H2(1)*TN(1)+H2(2)*TN(2)+H2(3)*TN(3))/HA2
+      GO TO 28
+   29 GAM=(H1(1)*TN(1)+H1(2)*TN(2)+H1(3)*TN(3))/HA1
+   28 CONTINUE
+      ALFA=SQRT(ABS(1.-GAM**2))
+C
+      DH2=(H1(1)*PM1-H2(1)*PM2)**2+
+     1    (H1(2)*PM1-H2(2)*PM2)**2+
+     1    (H1(3)*PM1-H2(3)*PM2)**2
+      IF(DH2*ALFA**2.GT.DELHP6**2) GO TO 903
+      ALFAQ=-ALFA*CFACT8*(HAM1+HAM2)*0.5
+      DFI=ABS(XL*ALFAQ)
+      IF(DFI.GT.DELFI6) GO TO 903
+C
+C *** COMPLETE TRANSFORMATION MATRIX BETWEEN ERRORS AT X1 AND X2
+C *** TAKING INTO ACCOUNT  FIELD GRADIENT PERPENDICULAR TO TRACK
+C
+   30 COSP2=COSP*COSP
+      SINP2=SINP*SINP
+      COSIP=COSP*SINP
+C
+      G22=SINP2*HN(9)+COSP2*HN(8)-2.0*COSIP*HN(7)
+      G33=SINL*SINL*(COSP2*HN(9)+SINP2*HN(8)+2.0*COSIP*HN(7))
+     ++COSL*(COSL*HN(6)-2.0*SINL*(COSP*HN(4)+SINP*HN(5)))
+      G23=SINL*(COSIP*(HN(9)-HN(8))+(SINP2-COSP2)*HN(7))
+     ++COSL*(COSP*HN(5)-SINP*HN(4))
+C
+      A(2,1)=XL*B2
+      A(2,3)=-B0*XL*PM12
+      A(2,4)=(B2*B3*PM12+G22)*XL*PM12
+      A(2,5)=(-B2*B2*PM12+G23)*XL*PM12
+C
+      A(3,1)=-XL*B3*COSL1
+      A(3,2)=B0*XL*PM12*COSL1**2
+      A(3,3)=1.+TGL*B2*XL*PM12
+      A(3,4)=(-B3*B3*PM12-G23)*XL*PM12*COSL1
+      A(3,5)=(B3*B2*PM12-G33)*XL*PM12*COSL1
+C
+      A(4,5)=-B3*TGL*XL*PM12
+      A(5,4)=B3*TGL*XL*PM12
+C
+   45 CONTINUE
+C
+C *** NEW = 0  TRANSFORMATION MATRIX IS UPDATED
+C           1  TRANSFORMATION MATRIX IS INITIALIZED
+C
+      IF(NEW.EQ.0) GO TO 23
+      NEW=0
+      DO 25 I=1,5
+         DO 24 K=1,5
+            B(I,K)=A(I,K)
+   24    CONTINUE
+   25 CONTINUE
+      GO TO 27
+   23 CONTINUE
+C
+      CALL XMM55(A,B,B)
+C
+   27 CONTINUE
+   80 IF(ITRAN.EQ.0) GO TO 90
+C
+C
+      J=0
+      DO 22 I=1,5
+         DO 21 K=I,5
+            J=J+1
+            S(J)=R(J)
+   21    CONTINUE
+   22 CONTINUE
+C
+C
+C *** TRANSFORM ERROR MATRIX
+C
+      CALL SSMT5T(B,S,S)
+C
+      NEW=1
+
+      J=0
+      DO 41 I=1,5
+         DO 40 K=I,5
+            J=J+1
+            R(J)=S(J)
+   40    CONTINUE
+   41 CONTINUE
+C
+   90 IF(IFLAG.LE.0) GO TO 900
+C
+C
+C *** TRANSFORM ERROR MATRIX FROM INTERNAL TO EXTERNAL VARIABLES;
+C
+C
+      NEW=1
+      IF(MVAR.NE.1) GO TO 91
+      PC(1)=PM2
+      PC(2)=ASIN(P2(3)*PC(1))
+      IF (ABS (P2(1)) .LT. 1.E-30) P2(1) = 1.E-30
+      PC(3) = ATAN2 (P2(2),P2(1))
+      CALL TRSCSP(PC,R,PS,R,H2,CH,IERR,SPX)
+      GO TO 900
+C
+   91 IF(MVAR.NE.0) GO TO 901
+      GO TO 900
+C
+C *** ERROR EXITS
+C
+  901 IERR=1
+      GO TO 999
+  902 IERR=2
+      GO TO 999
+  903 IERR=3
+      IF(INIT.NE.0) GO TO 30
+C     WRITE (LOUT, 998) DH2,DFI,ALFA,XL
+C 998 FORMAT(1H0,48H *** S/R TRPROP   DELTA(H*ALFA/P)  OR DELTA(PHI),5X
+C    1,22HEXCEEDS TOLERANCE     /1H0,4E12.5//16H **********    ,
+C    251HATTENTION !   NO FURTHER WARNINGS WILL BE GIVEN    ///)
+      INIT=1
+      GO TO 30
+  904 IERR=4
+  999 WRITE (LOUT, 1000) IERR
+ 1000 FORMAT(1H ,' *** S/R ERPROP   IERR =',I5)
+C
+  900 RETURN
+      END
++DECK,  TRPTSC, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE TRPTSC(PC,RC,PD,RD,IERR)
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM   SC   VARIABLES (1/Pt,LAMBDA,PHI,YT,ZT)
+C     FROM   SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+
+
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL  PC,PD,RC,RD
++SELF.
++CDE, TRCOM3.
+      DIMENSION PC(3),PD(3),RC(15),RD(15)
+*
+*______________________________________________________________________
+*
+      IERR = 0
+      COSL  = COS(PC(2))
+      IF (ABS(COSL).EQ.0) GO TO 901
+      SINL  =    SIN(PC(2))
+*
+      PD(1) = PC(1)*COSL
+      PD(2) = PC(2)
+      PD(3) = PC(3)
+*
+      J=0
+*
+      DO 10 I=1,5
+         DO 5 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RC(J)
+    5    CONTINUE
+   10 CONTINUE
+*
+      A(1,1) = COSL
+      A(2,2) = 1.D0
+      A(3,3) = 1.D0
+      A(4,4) = 1.D0
+      A(5,5) = 1.D0
+*
+      A(1,2) = -PC(1)*SINL
+C
+      CALL SSMT5T(A,S,S)
+C
+      DO 25 J=1,15
+        RD(J)=S(J)
+   25 CONTINUE
+C
+      RETURN
+C
+C *** ERROR EXITS
+C
+  901 IERR=1
+  910 CONTINUE
+C
+      END
++DECK,  TRPTSD, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE TRPTSD(PD,RD,PC,RC,H,CH,IERR,SPU,DJ,DK)
+*
+***************************************************************************
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM        VARIABLES (1/Pt,V',W',V,W)
+C     FROM        VARIABLES (1/P, V',W',V,W)
+C
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL   PD,PC,H,RC,RD,CH,DJ,DK,SPU
++SELF.
++CDE, TRCOM3.
+      DIMENSION PD(3),PC(3),H(3),RC(15),RD(15),DJ(3),DK(3)
+      DIMENSION UN(3),VN(3),DI(3),TVW(3)
+C
++SELF, IF=SINGLE.
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+*
+**_____________________________________________________________________
+*
+      IERR=0
+      TVW(1)=1./SQRT(1.+PD(2)**2+PD(3)**2)
+      IF(SPU.LT.0.) TVW(1)=-TVW(1)
+      TVW(2)=PD(2)*TVW(1)
+      TVW(3)=PD(3)*TVW(1)
+C
+      DI(1)=DJ(2)*DK(3)-DJ(3)*DK(2)
+      DI(2)=DJ(3)*DK(1)-DJ(1)*DK(3)
+      DI(3)=DJ(1)*DK(2)-DJ(2)*DK(1)
+C
+      DO 5 I=1,3
+         TN(I)=TVW(1)*DI(I)+TVW(2)*DJ(I)+TVW(3)*DK(I)
+    5 CONTINUE
+C
+      COSL=SQRT(ABS(1.-TN(3)**2))
+      IF (COSL .LT. 1.E-30) COSL = 1.E-30
+      COSL1=1./COSL
+      SINL  = TN(3)
+*
+      PC(1)=PD(1)*COSL
+      PC(2)=PD(2)
+      PC(3)=PD(3)
+      PM=PC(1)
+*
+      IF (ABS (TN(1)) .LT. 1.E-30) TN(1) = 1.E-30
+C
+      UN(1)=-TN(2)*COSL1
+      UN(2)=TN(1)*COSL1
+      UN(3)=0.
+C
+      VN(1)=-TN(3)*UN(2)
+      VN(2)=TN(3)*UN(1)
+      VN(3)=COSL
+
+C
+      UJ=UN(1)*DJ(1)+UN(2)*DJ(2)+UN(3)*DJ(3)
+      UK=UN(1)*DK(1)+UN(2)*DK(2)+UN(3)*DK(3)
+      VJ=VN(1)*DJ(1)+VN(2)*DJ(2)+VN(3)*DJ(3)
+      VK=VN(1)*DK(1)+VN(2)*DK(2)+VN(3)*DK(3)
+C
+      J=0
+      DO 10 I=1,5
+         DO 4 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RD(J)
+    4    CONTINUE
+   10 CONTINUE
+C
+      IF(CH.EQ.0.) GO TO 6
+      HA=SQRT(H(1)**2+H(2)**2+H(3)**2)
+      HAM=HA*PM
+      IF(HAM.EQ.0.) GO TO 6
+      HM=CH/HA
+C
+      Q=-HAM*CFACT8
+C
+      SINZ=-(H(1)*UN(1)+H(2)*UN(2)+H(3)*UN(3))*HM
+      COSZ= (H(1)*VN(1)+H(2)*VN(2)+H(3)*VN(3))*HM
+      A(1,4)=Q*TVW(2)*SINZ*(SINL*PD(1))
+      A(1,5)=Q*TVW(3)*SINZ*(SINL*PD(1))
+C
+6     continue
+      A(1,1) = COSL
+      A(2,2) = 1.
+      A(3,3) = 1.
+      A(4,4) = 1.
+      A(5,5) = 1.
+*
+      A(1,2)=-TVW(1)*VJ*(SINL*PD(1))
+      A(1,3)=-TVW(1)*VK*(SINL*PD(1))
+C
+      CALL SSMT5T(A,S,S)
+C
+      DO J=1,15
+        RC(J)=S(J)
+      ENDDO
+*
+      END
++DECK,  TRS1S2, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE TRS1S2 (PD1,RD1,PD2,RD2,H,CH,IERR,SP1,SP2
+     1,                  DJ1,DK1,DJ2,DK2)
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM        VARIABLES (1/P,V1',W1',V1,W1)
+C      TO         VARIABLES (1/P,V2',W2',V2,W2)
+C
+C     Authors: A. Haas and W. Wittek
+C
+C
+C *** PD1(3)    1/P,V1',W1'                             INPUT
+C     PD2(3)    1/P,V2',W2'                            OUTPUT
+C     H(3)      MAGNETIC FIELD                          INPUT
+C     RD1(15)   ERROR MATRIX IN 1/P,V1',W1',V1,W1       INPUT      (TRIANGLE)
+C     RD2(15)   ERROR MATRIX IN 1/P,V2',W2',V2,W2      OUTPUT      (TRIANGLE)
+C     CH        CHARGE OF PARTICLE                      INPUT
+C               CHARGE AND MAGNETIC FIELD ARE NEEDED
+C               FOR CORRELATION TERMS (V2',V1),(V2',W1),(W2',V1),(W2',W1)
+C               THESE CORRELATION TERMS APPEAR BECAUSE RD1 IS ASSUMED
+C               TO BE THE ERROR MATRIX FOR FIXED U1
+C               AND RD2 FOR FIXED U2
+C     SP1       SIGN OF U1-COMPONENT OF PARTICLE MOMENTUM     INPUT
+C     SP2       SIGN OF U2-COMPONENT OF PARTICLE MOMENTUM    OUTPUT
+C     DJ1(3)    UNIT VECTOR IN V1-DIRECTION
+C     DK1(3)    UNIT VECTOR IN W1-DIRECTION    OF SYSTEM 1
+C     DJ2(3)    UNIT VECTOR IN V2-DIRECTION
+C     DK2(3)    UNIT VECTOR IN W2-DIRECTION    OF SYSTEM 2
+C
+C     IERR      = 0    TRANSFORMATION OK
+C               = 1    MOMENTUM PERPENDICULAR TO U2-DIRECTION (V2',W2' NOT DEFIN
+C               = 2    MOMENTUM PERPENDICULAR TO X-AXIS
+C
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL   PD1,PD2,RD1,RD2,H,CH,SP1,SP2,DJ1,DK1,DJ2,DK2
++SELF.
++CDE, TRCOM3.
+      DIMENSION PD1(3),PD2(3),RD1(15),RD2(15),H(3),DJ1(3),DK1(3)
+     +,DJ2(3),DK2(3),UN(3),VN(3),DI1(3),DI2(3),TVW1(3),TVW2(3)
+C
++SELF, IF=SINGLE.
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+C
+      IERR=0
+      PM=PD1(1)
+      TVW1(1)=1./SQRT(1.+PD1(2)**2+PD1(3)**2)
+      IF(SP1.LT.0.) TVW1(1)=-TVW1(1)
+      TVW1(2)=PD1(2)*TVW1(1)
+      TVW1(3)=PD1(3)*TVW1(1)
+C
+      DI1(1)=DJ1(2)*DK1(3)-DJ1(3)*DK1(2)
+      DI1(2)=DJ1(3)*DK1(1)-DJ1(1)*DK1(3)
+      DI1(3)=DJ1(1)*DK1(2)-DJ1(2)*DK1(1)
+C
+      DO 5 I=1,3
+         TN(I)=TVW1(1)*DI1(I)+TVW1(2)*DJ1(I)+TVW1(3)*DK1(I)
+    5 CONTINUE
+C
+      DI2(1)=DJ2(2)*DK2(3)-DJ2(3)*DK2(2)
+      DI2(2)=DJ2(3)*DK2(1)-DJ2(1)*DK2(3)
+      DI2(3)=DJ2(1)*DK2(2)-DJ2(2)*DK2(1)
+C
+      TVW2(1)=TN(1)*DI2(1)+TN(2)*DI2(2)+TN(3)*DI2(3)
+      TVW2(2)=TN(1)*DJ2(1)+TN(2)*DJ2(2)+TN(3)*DJ2(3)
+      TVW2(3)=TN(1)*DK2(1)+TN(2)*DK2(2)+TN(3)*DK2(3)
+C
+      IF(TVW2(1).EQ.0.) GO TO 901
+      TR=1./TVW2(1)
+      SP2=1.
+      IF(TVW2(1).LT.0.) SP2=-1.
+      PD2(1)=PD1(1)
+      PD2(2)=TVW2(2)*TR
+      PD2(3)=TVW2(3)*TR
+C
+      COSL=SQRT(ABS(1.-TN(3)**2))
+      IF(COSL.EQ.0.) GO TO 902
+      COSL1=1./COSL
+      UN(1)=-TN(2)*COSL1
+      UN(2)=TN(1)*COSL1
+      UN(3)=0.
+C
+      VN(1)=-TN(3)*UN(2)
+      VN(2)=TN(3)*UN(1)
+      VN(3)=COSL
+C
+      UJ1=UN(1)*DJ1(1)+UN(2)*DJ1(2)+UN(3)*DJ1(3)
+      UK1=UN(1)*DK1(1)+UN(2)*DK1(2)+UN(3)*DK1(3)
+      VJ1=VN(1)*DJ1(1)+VN(2)*DJ1(2)+VN(3)*DJ1(3)
+      VK1=VN(1)*DK1(1)+VN(2)*DK1(2)+VN(3)*DK1(3)
+C
+      UJ2=UN(1)*DJ2(1)+UN(2)*DJ2(2)+UN(3)*DJ2(3)
+      UK2=UN(1)*DK2(1)+UN(2)*DK2(2)+UN(3)*DK2(3)
+      VJ2=VN(1)*DJ2(1)+VN(2)*DJ2(2)+VN(3)*DJ2(3)
+      VK2=VN(1)*DK2(1)+VN(2)*DK2(2)+VN(3)*DK2(3)
+C
+      J=0
+      DO 10 I=1,5
+         DO 4 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RD1(J)
+    4    CONTINUE
+   10 CONTINUE
+C
+      IF(CH.EQ.0.) GO TO 6
+      HA=SQRT(H(1)**2+H(2)**2+H(3)**2)
+      HAM=HA*PM
+      IF(HAM.EQ.0.) GO TO 6
+      HM=CH/HA
+C
+      Q=-HAM*CFACT8
+      TT=-Q*TR**3
+      SJ1I2=DJ1(1)*DI2(1)+DJ1(2)*DI2(2)+DJ1(3)*DI2(3)
+      SK1I2=DK1(1)*DI2(1)+DK1(2)*DI2(2)+DK1(3)*DI2(3)
+      SK2U=DK2(1)*UN(1)+DK2(2)*UN(2)+DK2(3)*UN(3)
+      SK2V=DK2(1)*VN(1)+DK2(2)*VN(2)+DK2(3)*VN(3)
+      SJ2U=DJ2(1)*UN(1)+DJ2(2)*UN(2)+DJ2(3)*UN(3)
+      SJ2V=DJ2(1)*VN(1)+DJ2(2)*VN(2)+DJ2(3)*VN(3)
+C
+      SINZ=-(H(1)*UN(1)+H(2)*UN(2)+H(3)*UN(3))*HM
+      COSZ= (H(1)*VN(1)+H(2)*VN(2)+H(3)*VN(3))*HM
+      A(2,4)=-TT*SJ1I2*(SK2U*SINZ-SK2V*COSZ)
+      A(2,5)=-TT*SK1I2*(SK2U*SINZ-SK2V*COSZ)
+      A(3,4)= TT*SJ1I2*(SJ2U*SINZ-SJ2V*COSZ)
+      A(3,5)= TT*SK1I2*(SJ2U*SINZ-SJ2V*COSZ)
+C
+    6 A(1,1)=1.
+      A(4,4)=TR*(UJ1*VK2-VJ1*UK2)
+      A(4,5)=TR*(UK1*VK2-VK1*UK2)
+      A(5,4)=TR*(VJ1*UJ2-UJ1*VJ2)
+      A(5,5)=TR*(VK1*UJ2-UK1*VJ2)
+C
+      TS=TR*TVW1(1)
+      A(2,2)=A(4,4)*TS
+      A(2,3)=A(4,5)*TS
+      A(3,2)=A(5,4)*TS
+      A(3,3)=A(5,5)*TS
+C
+      CALL SSMT5T(A,S,S)
+C
+      J=0
+      DO 25 I=1,5
+         DO 20 K=I,5
+            J=J+1
+            RD2(J)=S(J)
+   20    CONTINUE
+   25 CONTINUE
+C
+      RETURN
+C
+C *** ERROR EXITS
+C
+  901 IERR=1
+      GO TO 910
+  902 IERR=2
+  910 RETURN
+      END
+*
++DECK,  TRSCPT, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE TRSCPT(PC,RC,PD,RD,IERR)
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM   SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+C     FROM   SC   VARIABLES (1/Pt,LAMBDA,PHI,YT,ZT)
+
+
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL  PC,PD,RC,RD
++SELF.
++CDE, TRCOM3.
+      DIMENSION PC(3),PD(3),RC(15),RD(15)
+*
+*______________________________________________________________________
+*
+      IERR = 0
+      COSL  = COS(PC(2))
+      IF (ABS(COSL).EQ.0) GO TO 901
+      COSL1 = 1./COSL
+      TANL  =    TAN(PC(2))
+*
+      PD(1) = PC(1)*COSL1
+      PD(2) = PC(2)
+      PD(3) = PC(3)
+*
+      J=0
+*
+      DO 10 I=1,5
+         DO 5 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RC(J)
+    5    CONTINUE
+   10 CONTINUE
+*
+      A(1,1) = COSL1
+      A(2,2) = 1.D0
+      A(3,3) = 1.D0
+      A(4,4) = 1.D0
+      A(5,5) = 1.D0
+*
+      A(1,2) = PD(1)*TANL
+C
+      CALL SSMT5T(A,S,S)
+C
+      DO 25 J=1,15
+        RD(J)=S(J)
+   25 CONTINUE
+C
+      RETURN
+C
+C *** ERROR EXITS
+C
+  901 IERR=1
+  910 CONTINUE
+C
+      END
++DECK,  TRSCSD, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+C
+      SUBROUTINE TRSCSD(PC,RC,PD,RD,H,CH,IERR,SPU,DJ,DK)
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM   SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+C      TO         VARIABLES (1/P,V',W',V,W)
+C
+C     Authors: A. Haas and W. Wittek
+C
+C
+C *** PC(3)     1/P,LAMBDA,PHI                          INPUT
+C     PD(3)     1/P,V',W'                              OUTPUT
+C     H(3)      MAGNETIC FIELD                          INPUT
+C     RC(15)    ERROR MATRIX IN   SC   VARIABLES        INPUT     (TRIANGLE)
+C     RD(15)    ERROR MATRIX IN 1/P,V',W',V,W          OUTPUT     (TRIANGLE)
+C     CH        CHARGE OF PARTICLE                      INPUT
+C               CHARGE AND MAGNETIC FIELD ARE NEEDED
+C               FOR CORRELATION TERMS (V',YT),(V',ZT),(W',YT),(W',ZT)
+C               THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+C               TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+C               AND RD FOR FIXED U
+C     DJ(3)     UNIT VECTOR IN V-DIRECTION
+C     DK(3)     UNIT VECTOR IN W-DIRECTION    OF DETECTOR SYSTEM
+C
+C     IERR  =   1       PARTICLE MOVES PERPENDICULAR TO U-AXIS
+C                      ( V',W' ARE NOT DEFINED )
+C     SPU       SIGN OF U-COMPONENT OF PARTICLE MOMENTUM   OUTPUT
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL  PC,PD,H,RC,RD,CH,DJ,DK,SPU
++SELF.
++CDE, TRCOM3.
+      DIMENSION PC(3),PD(3),H(3),RC(15),RD(15),DJ(3),DK(3)
+      DIMENSION UN(3),VN(3),DI(3),TVW(3)
+C
++SELF, IF=SINGLE.
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+C
+      IERR=0
+      PM=PC(1)
+      COSL=COS(PC(2))
+      SINP=SIN(PC(3))
+      COSP=COS(PC(3))
+C
+      TN(1)=COSL*COSP
+      TN(2)=COSL*SINP
+      TN(3)=SIN(PC(2))
+C
+      DI(1)=DJ(2)*DK(3)-DJ(3)*DK(2)
+      DI(2)=DJ(3)*DK(1)-DJ(1)*DK(3)
+      DI(3)=DJ(1)*DK(2)-DJ(2)*DK(1)
+C
+      TVW(1)=TN(1)*DI(1)+TN(2)*DI(2)+TN(3)*DI(3)
+      SPU=1.
+      IF(TVW(1).LT.0.) SPU=-1.
+      TVW(2)=TN(1)*DJ(1)+TN(2)*DJ(2)+TN(3)*DJ(3)
+      TVW(3)=TN(1)*DK(1)+TN(2)*DK(2)+TN(3)*DK(3)
+      IF(TVW(1).EQ.0.) GO TO 901
+C
+      T1R=1./TVW(1)
+      PD(1)=PC(1)
+      PD(2)=TVW(2)*T1R
+      PD(3)=TVW(3)*T1R
+C
+      UN(1)=-SINP
+      UN(2)=COSP
+      UN(3)=0.
+C
+      VN(1)=-TN(3)*UN(2)
+      VN(2)=TN(3)*UN(1)
+      VN(3)=COSL
+C
+      UJ=UN(1)*DJ(1)+UN(2)*DJ(2)+UN(3)*DJ(3)
+      UK=UN(1)*DK(1)+UN(2)*DK(2)+UN(3)*DK(3)
+      VJ=VN(1)*DJ(1)+VN(2)*DJ(2)+VN(3)*DJ(3)
+      VK=VN(1)*DK(1)+VN(2)*DK(2)+VN(3)*DK(3)
+C
+C
+      J=0
+
+      DO 10 I=1,5
+         DO 5 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RC(J)
+    5    CONTINUE
+   10 CONTINUE
+C
+      IF(CH.EQ.0.) GO TO 6
+      HA=SQRT(H(1)**2+H(2)**2+H(3)**2)
+      HAM=HA*PM
+      IF(HAM.EQ.0.) GO TO 6
+      HM=CH/HA
+      Q=-HAM*CFACT8
+C
+C
+      SINZ=-(H(1)*UN(1)+H(2)*UN(2)+H(3)*UN(3))*HM
+      COSZ= (H(1)*VN(1)+H(2)*VN(2)+H(3)*VN(3))*HM
+      T3R=Q*T1R**3
+      UI=UN(1)*DI(1)+UN(2)*DI(2)+UN(3)*DI(3)
+      VI=VN(1)*DI(1)+VN(2)*DI(2)+VN(3)*DI(3)
+      A(2,4)=-UI*(VK*COSZ-UK*SINZ)*T3R
+      A(2,5)=-VI*(VK*COSZ-UK*SINZ)*T3R
+      A(3,4)= UI*(VJ*COSZ-UJ*SINZ)*T3R
+      A(3,5)= VI*(VJ*COSZ-UJ*SINZ)*T3R
+C
+    6 T2R=T1R**2
+C
+      A(1,1)=1.
+      A(2,2)=-UK*T2R
+      A(2,3)=VK*COSL*T2R
+      A(3,2)=UJ*T2R
+      A(3,3)=-VJ*COSL*T2R
+      A(4,4)=VK*T1R
+      A(4,5)=-UK*T1R
+      A(5,4)=-VJ*T1R
+      A(5,5)=UJ*T1R
+C
+      CALL SSMT5T(A,S,S)
+C
+      J=0
+      DO 25 I=1,5
+         DO 20 K=I,5
+            J=J+1
+            RD(J)=S(J)
+   20    CONTINUE
+   25 CONTINUE
+C
+      RETURN
+C
+C *** ERROR EXITS
+C
+  901 IERR=1
+  910 CONTINUE
+C
+      RETURN
+      END
+*
++DECK,  TRSCSP, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+C
+      SUBROUTINE TRSCSP(PC,RC,PS,RS,H,CH,IERR,SPX)
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM   SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+C      TO  SPLINE VARIABLES (1/P,Y',Z',Y,Z)
+C
+C     Authors: A. Haas and W. Wittek
+C
+C
+C *** PC(3)     1/P,LAMBDA,PHI                          INPUT
+C     PS(3)     1/P,Y',Z'                              OUTPUT
+C     H(3)      MAGNETIC FIELD                          INPUT
+C     RC(15)    ERROR MATRIX IN   SC   VARIABLES        INPUT     (TRIANGLE)
+C     RS(15)    ERROR MATRIX IN SPLINE VARIABLES       OUTPUT     (TRIANGLE)
+C     CH        CHARGE OF PARTICLE                      INPUT
+C               CHARGE AND MAGNETIC FIELD ARE NEEDED
+C               FOR CORRELATION TERMS (Y',YT),(Y',ZT),(Z',YT),(Z',ZT)
+C               THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+C               TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+C               AND RS FOR FIXED X
+C
+C     IERR  =   1       PARTICLE MOVES PERPENDICULAR TO X-AXIS
+C                      ( Y',Z' ARE NOT DEFINED )
+C     SPX       SIGN OF X-COMPONENT OF PARTICLE MOMENTUM   OUTPUT
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL   PC,PS,H,RC,RS,CH,SPX
++SELF.
++CDE, TRCOM3.
+      DIMENSION PC(3),PS(3),H(3),RC(15),RS(15)
+      DIMENSION UN(3),VN(3)
+C
++SELF, IF=SINGLE.
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+C
+      IERR=0
+      PM=PC(1)
+      COSL=COS(PC(2))
+      SINP=SIN(PC(3))
+      COSP=COS(PC(3))
+C
+      TN(1)=COSL*COSP
+      SPX=1.
+      IF(TN(1).LT.0.) SPX=-1.
+      IF(TN(1).EQ.0.) GO TO 901
+      TN(2)=COSL*SINP
+      TN(3)=SIN(PC(2))
+C
+      T1R=1./TN(1)
+      PS(1)=PC(1)
+      PS(2)=SINP/COSP
+      PS(3)=TN(3)*T1R
+C
+      UN(1)=-SINP
+      UN(2)=COSP
+C
+      VN(1)=-TN(3)*UN(2)
+      VN(2)=TN(3)*UN(1)
+      VN(3)=COSL
+C
+      J=0
+      DO 10 I=1,5
+         DO 5 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RC(J)
+    5    CONTINUE
+   10 CONTINUE
+C
+      IF(CH.EQ.0.) GO TO 6
+      HA=SQRT(H(1)**2+H(2)**2+H(3)**2)
+      HAM=HA*PM
+      IF(HAM.EQ.0.) GO TO 6
+      HM=CH/HA
+      Q=-HAM*CFACT8
+C
+C
+      SINZ=-(H(1)*UN(1)+H(2)*UN(2)           )*HM
+      COSZ= (H(1)*VN(1)+H(2)*VN(2)+H(3)*VN(3))*HM
+
+      T3R=Q*T1R**3
+      A(2,4)=-UN(1)*(VN(3)*COSZ           )*T3R
+      A(2,5)=-VN(1)*(VN(3)*COSZ           )*T3R
+      A(3,4)=UN(1)*(VN(2)*COSZ-UN(2)*SINZ)*T3R
+      A(3,5)=VN(1)*(VN(2)*COSZ-UN(2)*SINZ)*T3R
+C
+    6 T2R=T1R**2
+C
+      A(1,1)=1.
+      A(2,3)=VN(3)*COSL*T2R
+      A(3,2)=UN(2)*T2R
+      A(3,3)=-VN(2)*COSL*T2R
+      A(4,4)=VN(3)*T1R
+      A(5,4)=-VN(2)*T1R
+      A(5,5)=UN(2)*T1R
+C
+      CALL SSMT5T(A,S,S)
+C
+      J=0
+      DO 25 I=1,5
+         DO 20 K=I,5
+            J=J+1
+            RS(J)=S(J)
+   20    CONTINUE
+   25 CONTINUE
+C
+      RETURN
+C
+C *** ERROR EXITS
+C
+  901 IERR=1
+  910 CONTINUE
+C
+      RETURN
+      END
+*
++DECK,  TRSDPT, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE TRSDPT(PD,RD,PC,RC,H,CH,IERR,SPU,DJ,DK)
+*
+***************************************************************************
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM        VARIABLES (1/P,V',W',V,W)
+C     FROM        VARIABLES (1/Pt,V',W',V,W)
+C
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL   PD,PC,H,RC,RD,CH,DJ,DK,SPU
++SELF.
++CDE, TRCOM3.
+      DIMENSION PD(3),PC(3),H(3),RC(15),RD(15),DJ(3),DK(3)
+      DIMENSION UN(3),VN(3),DI(3),TVW(3)
+C
++SELF, IF=SINGLE.
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+*
+**_____________________________________________________________________
+*
+      IERR=0
+      PM=PD(1)
+      TVW(1)=1./SQRT(1.+PD(2)**2+PD(3)**2)
+      IF(SPU.LT.0.) TVW(1)=-TVW(1)
+      TVW(2)=PD(2)*TVW(1)
+      TVW(3)=PD(3)*TVW(1)
+C
+      DI(1)=DJ(2)*DK(3)-DJ(3)*DK(2)
+      DI(2)=DJ(3)*DK(1)-DJ(1)*DK(3)
+      DI(3)=DJ(1)*DK(2)-DJ(2)*DK(1)
+C
+      DO 5 I=1,3
+         TN(I)=TVW(1)*DI(I)+TVW(2)*DJ(I)+TVW(3)*DK(I)
+    5 CONTINUE
+C
+      COSL=SQRT(ABS(1.-TN(3)**2))
+      IF (COSL .LT. 1.E-30) COSL = 1.E-30
+      COSL1=1./COSL
+      TANL  = TN(3)*COSL1
+*
+      PC(1)=PD(1)*COSL1
+      PC(2)=PD(2)
+      PC(3)=PD(3)
+*
+      IF (ABS (TN(1)) .LT. 1.E-30) TN(1) = 1.E-30
+C
+      UN(1)=-TN(2)*COSL1
+      UN(2)=TN(1)*COSL1
+      UN(3)=0.
+C
+      VN(1)=-TN(3)*UN(2)
+      VN(2)=TN(3)*UN(1)
+      VN(3)=COSL
+
+C
+      UJ=UN(1)*DJ(1)+UN(2)*DJ(2)+UN(3)*DJ(3)
+      UK=UN(1)*DK(1)+UN(2)*DK(2)+UN(3)*DK(3)
+      VJ=VN(1)*DJ(1)+VN(2)*DJ(2)+VN(3)*DJ(3)
+      VK=VN(1)*DK(1)+VN(2)*DK(2)+VN(3)*DK(3)
+C
+      J=0
+      DO 10 I=1,5
+         DO 4 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RD(J)
+    4    CONTINUE
+   10 CONTINUE
+C
+      IF(CH.EQ.0.) GO TO 6
+      HA=SQRT(H(1)**2+H(2)**2+H(3)**2)
+      HAM=HA*PM
+      IF(HAM.EQ.0.) GO TO 6
+      HM=CH/HA
+C
+      Q=-HAM*CFACT8
+C
+      SINZ=-(H(1)*UN(1)+H(2)*UN(2)+H(3)*UN(3))*HM
+      COSZ= (H(1)*VN(1)+H(2)*VN(2)+H(3)*VN(3))*HM
+      A(1,4)=-Q*TVW(2)*SINZ*(TANL*PC(1))
+      A(1,5)=-Q*TVW(3)*SINZ*(TANL*PC(1))
+C
+6     continue
+      A(1,1) = COSL1
+      A(2,2) = 1.
+      A(3,3) = 1.
+      A(4,4) = 1.
+      A(5,5) = 1.
+*
+      A(1,2)=TVW(1)*VJ*(TANL*PC(1))
+      A(1,3)=TVW(1)*VK*(TANL*PC(1))
+C
+      CALL SSMT5T(A,S,S)
+C
+      DO J=1,15
+        RC(J)=S(J)
+      ENDDO
+*
+      END
++DECK,  TRSDSC, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+C
+      SUBROUTINE TRSDSC(PD,RD,PC,RC,H,CH,IERR,SPU,DJ,DK)
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM        VARIABLES (1/P,V',W',V,W)
+C      TO    SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+C
+C     Authors: A. Haas and W. Wittek
+C
+C
+C *** PD(3)     1/P,V',W'                               INPUT
+C     PC(3)     1/P,LAMBDA,PHI                         OUTPUT
+C     H(3)      MAGNETIC FIELD                          INPUT
+C     RD(15)    ERROR MATRIX IN 1/P,V',W',V,W           INPUT      (TRIANGLE)
+C     RC(15)    ERROR MATRIX IN   SC   VARIABLES       OUTPUT      (TRIANGLE)
+C     CH        CHARGE OF PARTICLE                      INPUT
+C               CHARGE AND MAGNETIC FIELD ARE NEEDED
+C               FOR CORRELATION TERMS (LAMBDA,V),(LAMBDA,W),(PHI,V),(PHI,W)
+C               THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+C               TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+C               AND RD FOR FIXED U
+C     DJ(3)     UNIT VECTOR IN V-DIRECTION
+C     DK(3)     UNIT VECTOR IN W-DIRECTION    OF DETECTOR SYSTEM
+C
+C     IERR              NOT USED
+C     SPU       SIGN OF U-COMPONENT OF PARTICLE MOMENTUM    INPUT
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL   PD,PC,H,RC,RD,CH,DJ,DK,SPU
++SELF.
++CDE, TRCOM3.
+      DIMENSION PD(3),PC(3),H(3),RC(15),RD(15),DJ(3),DK(3)
+      DIMENSION UN(3),VN(3),DI(3),TVW(3)
+C
++SELF, IF=SINGLE.
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+C
+      IERR=0
+      PM=PD(1)
+      TVW(1)=1./SQRT(1.+PD(2)**2+PD(3)**2)
+      IF(SPU.LT.0.) TVW(1)=-TVW(1)
+      TVW(2)=PD(2)*TVW(1)
+      TVW(3)=PD(3)*TVW(1)
+C
+      DI(1)=DJ(2)*DK(3)-DJ(3)*DK(2)
+      DI(2)=DJ(3)*DK(1)-DJ(1)*DK(3)
+      DI(3)=DJ(1)*DK(2)-DJ(2)*DK(1)
+C
+      DO 5 I=1,3
+         TN(I)=TVW(1)*DI(I)+TVW(2)*DJ(I)+TVW(3)*DK(I)
+    5 CONTINUE
+C
+      PC(1)=PD(1)
+      PC(2)=ASIN(TN(3))
+      IF (ABS (TN(1)) .LT. 1.E-30) TN(1) = 1.E-30
+      PC(3) = ATAN2 (TN(2),TN(1))
+C
+      COSL=SQRT(ABS(1.-TN(3)**2))
+      IF (COSL .LT. 1.E-30) COSL = 1.E-30
+      COSL1=1./COSL
+      UN(1)=-TN(2)*COSL1
+      UN(2)=TN(1)*COSL1
+      UN(3)=0.
+C
+      VN(1)=-TN(3)*UN(2)
+      VN(2)=TN(3)*UN(1)
+      VN(3)=COSL
+
+C
+      UJ=UN(1)*DJ(1)+UN(2)*DJ(2)+UN(3)*DJ(3)
+      UK=UN(1)*DK(1)+UN(2)*DK(2)+UN(3)*DK(3)
+      VJ=VN(1)*DJ(1)+VN(2)*DJ(2)+VN(3)*DJ(3)
+      VK=VN(1)*DK(1)+VN(2)*DK(2)+VN(3)*DK(3)
+C
+      J=0
+      DO 10 I=1,5
+         DO 4 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RD(J)
+    4    CONTINUE
+   10 CONTINUE
+C
+      IF(CH.EQ.0.) GO TO 6
+      HA=SQRT(H(1)**2+H(2)**2+H(3)**2)
+      HAM=HA*PM
+      IF(HAM.EQ.0.) GO TO 6
+      HM=CH/HA
+C
+      Q=-HAM*CFACT8
+C
+      SINZ=-(H(1)*UN(1)+H(2)*UN(2)+H(3)*UN(3))*HM
+      COSZ= (H(1)*VN(1)+H(2)*VN(2)+H(3)*VN(3))*HM
+      A(2,4)=-Q*TVW(2)*SINZ
+      A(2,5)=-Q*TVW(3)*SINZ
+      A(3,4)=-Q*TVW(2)*COSZ*COSL1
+      A(3,5)=-Q*TVW(3)*COSZ*COSL1
+C
+    6 A(1,1)=1.
+      A(2,2)=TVW(1)*VJ
+      A(2,3)=TVW(1)*VK
+      A(3,2)=TVW(1)*UJ*COSL1
+      A(3,3)=TVW(1)*UK*COSL1
+      A(4,4)=UJ
+      A(4,5)=UK
+      A(5,4)=VJ
+      A(5,5)=VK
+C
+      CALL SSMT5T(A,S,S)
+C
+      J=0
+      DO 25 I=1,5
+         DO 20 K=I,5
+            J=J+1
+            RC(J)=S(J)
+   20    CONTINUE
+   25 CONTINUE
+C
+      RETURN
+C
+C *** ERROR EXITS
+C
+      END
+*
++DECK,  TRSPSC, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:36  mclareni
+* Add geane321 source directories
+
+C
+      SUBROUTINE TRSPSC(PS,RS,PC,RC,H,CH,IERR,SPX)
+C
+C *** TRANSFORMS ERROR MATRIX
+C     FROM SPLINE VARIABLES (1/P,Y',Z',Y,Z)
+C      TO    SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+C
+C     Authors: A. Haas and W. Wittek
+C
+C
+C *** PS(3)     1/P,Y',Z'                               INPUT
+C     PC(3)     1/P,LAMBDA,PHI                         OUTPUT
+C     H(3)      MAGNETIC FIELD                          INPUT
+C     RS(15)    ERROR MATRIX IN SPLINE VARIABLES        INPUT      (TRIANGLE)
+C     RC(15)    ERROR MATRIX IN   SC   VARIABLES       OUTPUT      (TRIANGLE)
+C     CH        CHARGE OF PARTICLE                      INPUT
+C               CHARGE AND MAGNETIC FIELD ARE NEEDED
+C               FOR CORRELATION TERMS (LAMBDA,Y),(LAMBDA,Z),(PHI,Y),(PHI,Z)
+C               THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+C               TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+C               AND RS FOR FIXED X
+C
+C     IERR              NOT USED
+C     SPX       SIGN OF X-COMPONENT OF PARTICLE MOMENTUM    INPUT
+C
++SELF, IF=-SINGLE.
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      REAL   PS,PC,H,RC,RS,CH,SPX
++SELF.
++CDE, TRCOM3.
+      DIMENSION PS(3),PC(3),H(3),RC(15),RS(15)
+      DIMENSION UN(3),VN(3)
+C
++SELF, IF=SINGLE.
+      DATA CFACT8 / 2.997925 E-4 /
++SELF, IF=-SINGLE.
+      DATA CFACT8 / 2.997925 D-4 /
++SELF.
+C
+      IERR=0
+      PM=PS(1)
+      TN(1)=1./SQRT(1.+PS(2)**2+PS(3)**2)
+      IF(SPX.LT.0.) TN(1)=-TN(1)
+      TN(2)=PS(2)*TN(1)
+      TN(3)=PS(3)*TN(1)
+C
+      PC(1)=PS(1)
+      PC(2)=ASIN(TN(3))
+      IF (ABS (TN(1)) .LT. 1.E-30) TN(1) = 1.E-30
+      PC(3) = ATAN2 (TN(2),TN(1))
+C
+      COSL=SQRT(ABS(1.-TN(3)**2))
+      IF (COSL .LT. 1.E-30) COSL = 1.E-30
+      COSL1=1./COSL
+      UN(1)=-TN(2)*COSL1
+      UN(2)=TN(1)*COSL1
+C
+      VN(1)=-TN(3)*UN(2)
+      VN(2)=TN(3)*UN(1)
+      VN(3)=COSL
+C
+      J=0
+      DO 10 I=1,5
+         DO 4 K=I,5
+            J=J+1
+            A(I,K)=0.
+            A(K,I)=0.
+            S(J)=RS(J)
+    4    CONTINUE
+   10 CONTINUE
+C
+      IF(CH.EQ.0.) GO TO 6
+
+      HA=SQRT(H(1)**2+H(2)**2+H(3)**2)
+      HAM=HA*PM
+      IF(HAM.EQ.0.) GO TO 6
+      HM=CH/HA
+C
+      Q=-HAM*CFACT8
+C
+      SINZ=-(H(1)*UN(1)+H(2)*UN(2)           )*HM
+      COSZ= (H(1)*VN(1)+H(2)*VN(2)+H(3)*VN(3))*HM
+      A(2,4)=-Q*TN(2)*SINZ
+      A(2,5)=-Q*TN(3)*SINZ
+      A(3,4)=-Q*TN(2)*COSZ*COSL1
+      A(3,5)=-Q*TN(3)*COSZ*COSL1
+C
+    6 A(1,1)=1.
+      A(2,2)=TN(1)*VN(2)
+      A(2,3)=TN(1)*VN(3)
+      A(3,2)=TN(1)*UN(2)*COSL1
+      A(4,4)=UN(2)
+      A(5,4)=VN(2)
+      A(5,5)=VN(3)
+C
+      CALL SSMT5T(A,S,S)
+C
+      J=0
+      DO 25 I=1,5
+         DO 20 K=I,5
+            J=J+1
+            RC(J)=S(J)
+   20    CONTINUE
+   25 CONTINUE
+*
+* *** ERROR EXITS
+*
+      END
++PATCH, ERDECKS.
++DECK,  ERBCER, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:34  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERBCER (E)
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       After the back-tracking transforms the error matrix      *
+C.    *                  back to the original                          *
+C.    *                  particle direction                            *
+C.    *                                                                *
+C.    *       Arguments                                                *
+C.    *           E        - Error Matrix (Triangular)                 *
+C.    *                                                                *
+C.    *    ==>Called by : ERPEND                                       *
+C.    *       Author    E.Nagy  *********                              *
+C.    *                                                                *
+C.    ******************************************************************
+*
+         DIMENSION E(15)
+*
+      J = 0
+      DO 10 I = 1, 5
+         DO 5 K = I, 5
+            J = J + 1
+            IF (I.EQ.2) E(J) = -E(J)
+            IF (K.EQ.2) E(J) = -E(J)
+            IF (I.EQ.4) E(J) = -E(J)
+            IF (K.EQ.4) E(J) = -E(J)
+    5    CONTINUE
+   10 CONTINUE
+*                                                           END ERBCER
+      END
++DECK,  ERBCTR, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:34  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERBCTR (X)
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       After the back-tracking transforms                       *
+C.    *                  the transport matrix back to the original     *
+C.    *                  particle direction                            *
+C.    *                                                                *
+C.    *       Arguments                                                *
+C.    *           X        - Transport Matrix                          *
+C.    *                                                                *
+C.    *    ==>Called by : ERPEND                                       *
+C.    *       Author    E.Nagy  *********                              *
+C.    *                                                                *
+C.    ******************************************************************
+*
+         DOUBLE PRECISION X(5,5)
+*
+      DO 10 I = 1, 5
+         DO 5 K = 1, 5
+            IF (I.EQ.2) X(I,K) = -X(I,K)
+            IF (K.EQ.2) X(I,K) = -X(I,K)
+            IF (I.EQ.4) X(I,K) = -X(I,K)
+            IF (K.EQ.4) X(I,K) = -X(I,K)
+    5    CONTINUE
+   10 CONTINUE
+*                                                           END ERBCTR
+      END
++DECK,  ERLAND, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:34  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERLAND (STEP, Z, A, RHO, P, E, XMASS, DEDX2)
+C.
+C.    ******************************************************************
+C.    *                                                                *
+C.    *  Calculates energy straggling using Gaussian theory in a step  *
+C.    *                                                                *
+C.    *  Input  STEP   =  current step-length (cm)                     *
+C.    *         Z      =  Z of the material                            *
+C.    *         A      =  A of the material                            *
+C.    *         RHO    =  density of the material                      *
+C.    *         P      =  momentum of the particle                     *
+C.    *         E      =  energy   of the particle                     *
+C.    *         XMASS  =  mass     of the particle                     *
+C.    *                                                                *
+C.    *  Output DEDX2  =  mean square of the straggling in G           *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRCH                                       *
+C.    *       Author    E.Nagy  *********                              *
+C.    *       Original routine : GLANDO                                *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, GCONST.
+*
+      IF (STEP.LT.1.E-7) THEN
+         DEDX2=0.
+         RETURN
+      ENDIF
+*
+*     Calculate xi factor (KeV).
+      BETA   = P/E
+      GAMMA  = E/XMASS
+      XI     = (153.5*Z*STEP*RHO)/(A*BETA*BETA)
+*
+*     Maximum energy transfer to atomic electron (KeV).
+      ETA    = BETA*GAMMA
+      ETASQ  = ETA*ETA
+      RATIO  = EMASS/XMASS
+      F1     = 2.*EMASS*ETASQ
+      F2     = 1.+2.*RATIO*GAMMA+RATIO*RATIO
+      EMAX   = 1.E+6*F1/F2
+*
+*
+* *** and now sigma**2  in GeV
+*        gaussian
+      DEDX2  = XI*EMAX*(1.-(BETA*BETA/2.))*1.E-12
+*
+      END
++DECK,  ERMCSC, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERMCSC (E)
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       Calculates Multiple Scattering Matrix in a step          *
+C.    *                                                                *
+C.    *           E        - Error Matrix (Triangular)                 *
+C.    *           STEP     - Step length in cm                         *
+C.    *           RADL     - Radiation length in cm                    *
+C.    *           VECT(7)  - Momentum in GeV                           *
+C.    *           CLA      - Cosine of the deep angle                  *
+C.    *                                                                *
+C.    *    ==>Called by : ERPROP                                       *
+C.    *       Author    E.Nagy  *********                              *
+C.    *                                                                *
+C.    ******************************************************************
+*
++CDE, GCMATE.
++CDE, GCKINE.
++CDE, GCTRAK.
+*
+      DOUBLE PRECISION E(15)
+*
+      PBETA = VECT(7)*VECT(7)/GETOT
+      RI    = STEP/RADL
+*
+      CRLOG = 1.
+CC      CRLOG = 1. + 0.201*LOG(RI)
+CC      IF (CRLOG.LE.0.) CRLOG = 0.
+      D     = 1.8496E-4*RI*((CHARGE*CRLOG/PBETA)**2)
+      S1    = D*STEP**2/3.
+      S2    = D
+      S3    = D*STEP/2.
+      CLA = SQRT (VECT(4)**2+VECT(5)**2)
+      E(6)  = E(6)+S2
+      E(9)  = E(9)-S3
+      E(10) = E(10)+S2/CLA**2
+      E(11) = E(11)+S3/CLA
+      E(13) = E(13)+S1
+      E(15) = E(15)+S1
+*
+      END
++DECK,  ERPINI, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERPINI
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       Initializes the error propagation                        *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRAK                                       *
+C.    *       Author    E.Nagy  *********                              *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, GCKINE.
++CDE, GCTRAK.
++CDE, GCUNIT.
++CDE, ERWORK.
++CDE, ERTRIO.
+*
+      DIMENSION DUMM(15)
+*
+* *** Starting point
+*
+      DO 11 I = 1,3
+         XI(I) = VECT(I)
+         PPI(I) = VECT(7)*VECT(3+I)
+   11 CONTINUE
+*
+* *** Initialize tracking
+*
+      MVAR   = 0
+      IFLAG  =-1
+      ITRAN  = 0
+      CALL TRPROP (XI, PPI, HI, DUM, DUM, HI, CHTR, DUM, DUMM,
+     &            MVAR, IFLAG, ITRAN, IERR)
+      IF (IERR.NE.0) THEN
+         WRITE (LOUT, 777) IERR
+         RETURN
+      ENDIF
+      DO 13 I = 1,15
+         EF(I) = EI(I)
+   13 CONTINUE
+*
+  777 FORMAT(//4X,' **** Error in subr. TRPROP',I4,'  called by'
+     F     ,' subr. ERPINI'//)
+*
+       END
++DECK,  ERPROP, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERPROP
+C.
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       Performs the error propagation in a step                 *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRCH / ERTRNT                              *
+C.    *       Author    E.Nagy  *********                              *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, GCTMED.
++CDE, GCKINE.
++CDE, GCTRAK.
++CDE, GCUNIT.
++CDE, ERWORK.
++CDE, ERTRIO.
++CDE, TRCOM3.
+*
+      DIMENSION DUM(15)
+*
+* *** Prepares the end-point
+*
+      DO 11 I = 1,3
+         XF(I) = VECT(I)
+         PF(I) = VECT(7)*VECT(3+I)
+         HF(I) = 0.
+   11 CONTINUE
+*
+      IF (IFIELD.EQ.3) THEN
+         HF(3) = FIELDM
+      ELSEIF (IFIELD.NE.0) THEN
+         CALL GUFLD (VECT, HF)
+      ENDIF
+*
+* *** Propagates the error (in SC-variables)
+*
+      MVAR  = 0
+      IFLAG = 0
+      ITRAN = 0
+      IF (.NOT.LEEXAC) THEN
+         CALL TRPROP (XI ,PPI, HI, XF, PF, HF, CHTR, STEP, DUM,
+     &                MVAR, IFLAG, ITRAN, IERR)
+      ELSE
+         CALL TRPRFN (XI ,PPI, HI, XF, PF, HF, CHTR, STEP, DUM,
+     &                MVAR, IFLAG, ITRAN, IERR)
+      ENDIF
+*
+      IF(IERR.NE.0) THEN
+         WRITE (LOUT, 778) IERR
+         RETURN
+      ENDIF
+*
+* *** Transport the matrix
+*
+      CALL SSMT5T (A, EF, EF)
+*
+      IF (CHARGE.NE.0.) THEN
+*
+* ***    Add multiple scattering
+*
+         CALL ERMCSC (EF)
+*
+* ***    Add fluctuation due to ionization to the error matrix
+*          (and (later) due to bremsstrahlung and pair-production)
+*
+          EF(1) = EF(1) + (GETOT*GETOT*DEDX2)/(VECT(7)**6)
+*
+      ENDIF
+*
+* *** Copy variables for the next step
+*
+      CALL UCOPY (XF, XI, 3)
+      CALL UCOPY (PF, PPI, 3)
+      CALL UCOPY (HF, HI, 9)
+*
+*
+  778 FORMAT(//4X,' *** Error in subr. TRPROP',I4,'  called by',
+     &                'subr. ERPROP'//)
+*
+      END
++DECK,  ERSTOR, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERSTOR
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       Store error matrix informations                          *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRGO , ERTRCH , ERTRNT                     *
+C.    *       Author    M.Maire, E.Nagy  *********                     *
+C.    *                                                                *
+C.    ******************************************************************
+*
++CDE, GCKINE.
++CDE, GCTRAK.
++CDE, ERWORK.
++CDE, ERTRIO.
++CDE, TRCOM3.
+*
+      DOUBLE PRECISION  C(5,5), DUM(5,5)
+*
+* *** Write out results at intermediate points
+*
+      ILPRED = ILPRED + 1
+      IF (ILPRED.GE.NEPRED) ISTOP = 1
+      IEPRED(ILPRED) = INLIST
+*
+* *** Leave B-matrix intact for eventual further tracking
+*
+      IF (.NOT. LEONLY) THEN
+         DO 6 I = 1, 5
+            DO 5 J = 1, 5
+               C(I,J) = B(I,J)
+    5       CONTINUE
+    6    CONTINUE
+*
+* ***    Error matrix into single precision
+*
+         DO 10 I = 1, 15
+            ERROUT(I,ILPRED) = EF(I)
+   10    CONTINUE
+*
+* ***    If backtracking - vector, charge, error- and transport-matrix
+*        in original direction
+*
+         IF (BACKTR.LT.0.) THEN
+            CALL ERBCER (ERROUT(1,ILPRED))
+            CALL ERBCTR (C)
+         ENDIF
+      ENDIF
+*
+* *** Back into SC variables
+*
+      IF (VECT(7) .LT. 1.E-30) VECT(7) = 1.E-30
+      PF(1) = 1./VECT(7)
+      PF(2) = BACKTR*ASIN (VECT(6))
+      IF (ABS (VECT(4)) .LT. 1.E-30) VECT(4) = 1.E-30
+      PF(3) = ATAN2 (BACKTR*VECT(5), BACKTR*VECT(4))
+*
+* *** Transform error matrix in the variables of the plane where
+*         tracking terminates
+*
+      IF (LEPLAN) THEN
+         CALL TRSCSD (PF, ERROUT(1,ILPRED), PF ,ERROUT(1,ILPRED), HF,
+     +                CHARGE, IER ,SPU, ERPLO(1,1,INLIST),
+     +                ERPLO(1,2,INLIST))
+         IF (LEONLY) GOTO 25
+         CALL DMM55 (A, C, DUM)
+         CALL DMM55 (DUM, ASDSC, C)
+      ENDIF
+*
+* *** Transport matrix in single precision
+*
+      DO 20 I = 1,5
+         DO 15 J = 1,5
+            ERDTRP(I,J,ILPRED) = C(I,J)
+            ERTRSP(I,J,ILPRED) = C(I,J)
+   15    CONTINUE
+   20 CONTINUE
+*
+   25 CONTINUE
+      DO 30 I = 1, 3
+         ERXOUT(I,ILPRED) = VECT(I)
+         ERPOUT(I,ILPRED) = PF(I)
+   30 CONTINUE
+*
+      END
++DECK,  ERTRAK, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:34  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERTRAK (X1, P1, X2, P2, IPA, CHOPT)
+*
+************************************************************************
+*                                                                      *
+*          Perform the tracking of the track from point X1 to          *
+*                    point X2                                          *
+*          (Before calling this routine the user should also provide   *
+*                    the input informations in /EROPTS/ and /ERTRIO/   *
+*                    using subroutine EUFIL(L/P/V)                     *
+*                 X1       - Starting coordinates (Cartesian)          *
+*                 P1       - Starting 3-momentum  (Cartesian)          *
+*                 X2       - Final coordinates    (Cartesian)          *
+*                 P2       - Final 3-momentum     (Cartesian)          *
+*                 IPA      - Particle code (a la GEANT) of the track   *
+*                                                                      *
+*                 CHOPT                                                *
+*                     'B'   'Backward tracking' - i.e. energy loss     *
+*                                        added to the current energy   *
+*                     'E'   'Exact' calculation of errors assuming     *
+*                                        helix (i.e. pathlength not    *
+*                                        assumed as infinitesimal)     *
+*                     'L'   Tracking upto prescribed Lengths reached   *
+*                     'M'   'Mixed' prediction (not yet coded)         *
+*                     'O'   Tracking 'Only' without calculating errors *
+*                     'P'   Tracking upto prescribed Planes reached    *
+*                     'V'   Tracking upto prescribed Volumes reached   *
+*                     'X'   Tracking upto prescribed Point approached  *
+*                                                                      *
+*                Interface with GEANT :                                *
+*             Track parameters are in /CGKINE/ and /GCTRAK/            *
+*                                                                      *
+*          ==>Called by : USER                                         *
+*             Authors   M.Maire, E.Nagy  *********                     *
+*                                                                      *
+************************************************************************
+*
++CDE, GCBANK.
++CDE, GCNUM.
++CDE, GCKINE.
++CDE, GCTMED.
++CDE, GCTRAK.
++CDE, GCUNIT.
++CDE, ERTRIO.
++CDE, ERWORK.
++CDE, TRCOM3.
+*
+      DIMENSION      P1(3), P2(3), X1(3), X2(3), DUM(15), IOPT(30)
+      EQUIVALENCE    (IOPT(1),IOPTB), (IOPT(2),IOPTE), (IOPT(3),IOPTL),
+     ,               (IOPT(4),IOPTM), (IOPT(5),IOPTO), (IOPT(6),IOPTP),
+     ,               (IOPT(7),IOPTV), (IOPT(8),IOPTX)
+      CHARACTER      CHOPT*(*)
+*
+*
+* *** Decode character option
+*
+      CHOPTI = CHOPT
+      CALL UOPTC (CHOPT, 'BELMOPVX', IOPT)
+*
+      IF (IOPTB.EQ.0) THEN
+         BACKTR = 1.
+      ELSE
+         BACKTR = -1.
+      ENDIF
+*
+      LEEXAC = IOPTE.NE.0
+      LELENG = IOPTL.NE.0
+      LEONLY = IOPTO.NE.0
+      LEPLAN = IOPTP.NE.0
+      LEVOLU = IOPTV.NE.0
+      LEPOIN = IOPTX.NE.0
+*
+* *** Check consistency of the Ch-options
+*
+         IF ((LELENG .AND. LEVOLU) .OR. (LELENG .AND. LEPLAN) .OR.
+     +       (LEVOLU .AND. LEPLAN)) THEN
+            WRITE (LOUT, 779)
+            GO TO 99
+         ENDIF
+*
+* *** Initialization
+*
+      IF (NEPRED.LE.0) THEN
+         WRITE (LOUT, 780)
+         GO TO 99
+      ENDIF
+      ILPRED = 0
+      TLGCM2 = 0.
+      TLRAD  = 0.
+      CALL VZERO (IEPRED ,   MXPRED)
+      CALL VZERO (ERXOUT , 3*MXPRED)
+      CALL VZERO (ERPOUT , 3*MXPRED)
+      CALL VZERO (ERROUT ,15*MXPRED)
+*
+      DO 10 I = 1, 3
+         ERXIN(I) = X1(I)
+   10 CONTINUE
+*
+      PMOM2 = P1(1)**2 + P1(2)**2 + P1(3)**2
+      IF(PMOM2.LE.1.E-20) THEN
+         WRITE (LOUT, 778)
+         GO TO 99
+      ENDIF
+      PABS = SQRT (PMOM2)
+      ERPIN(1) = 1./PABS
+      ERPIN(2) = ASIN (P1(3)*ERPIN(1))
+      IF (ABS (P1(1)) .LT. 1.E-30) P1(1) = 1.E-30
+      ERPIN(3) = ATAN2 (P1(2), P1(1))
+*
+* *** Initialize GCKINE common
+*
+      IF((IPA.LE.0).OR.(IPA.GT.NPART)) THEN
+          WRITE (LOUT, 777) IPA
+          GO TO 99
+      ENDIF
+*
+      ITRA = 1
+      ISTAK = 0
+      IPART = IPA
+      JPA = LQ(JPART-IPART)
+      DO 26 I=1,5
+         NAPART(I) = IQ(JPA+I)
+   26 CONTINUE
+      ITRTYP = Q(JPA+6)
+      AMASS  = Q(JPA+7)
+      CHARGE = Q(JPA+8)
+      CHTR   = CHARGE*BACKTR
+      TLIFE  = Q(JPA+9)
+*
+* *** Starting field
+*
+      CALL VZERO (HI, 9)
+      CALL VZERO (HF, 9)
+*
+* *** Error matrix into SC System
+*
+      IF (LEPLAN) THEN
+         IF (IFIELD.EQ.3) THEN
+            HI(3) = FIELDM
+         ELSEIF (IFIELD.NE.0) THEN
+            CALL GUFLD (X1, HI)
+         ENDIF
+         CALL VZERO (DUM,15)
+         CALL TRSCSD (ERPIN(1), DUM(1),   ERPIN(1), DUM(1),   HI(1),
+     +                CHARGE, IERR, SPU, ERPLI(1,1), ERPLI(1,2))
+         IF (LEONLY) GOTO 35
+         CALL TRSDSC (ERPIN(1), ERRIN(1), DUM(1),   ERRIN(1), HI(1),
+     +                CHARGE, IERR, SPU, ERPLI(1,1), ERPLI(1,2))
+         DO 29 I = 1, 5
+            DO 28 J = 1, 5
+               ASDSC(I,J) = A(I,J)
+   28       CONTINUE
+   29    CONTINUE
+      ENDIF
+      IF (LEONLY) GOTO 35
+*
+* *** Error matrix into direction of tracking
+*
+      IF (BACKTR .LT. 0.) CALL ERBCER (ERRIN(1))
+*
+* *** Error matrix into double precision
+*
+      DO 30 I = 1,15
+         EI(I) = ERRIN(I)
+   30 CONTINUE
+*
+   35 CONTINUE
+      DO 41 I = 1, 3
+         VERT(I)  = X1(I)
+         PVERT(I) = P1(I)*BACKTR
+   41 CONTINUE
+*
+* *** Initialize GCTRAK common
+*
+      PVERT(4) = SQRT (PMOM2 + AMASS**2)
+      VECT(7) = PABS
+      DO 51 I=1,3
+         VECT(I) = VERT(I)
+         VECT(I+3) = PVERT(I)/VECT(7)
+   51 CONTINUE
+      GETOT = PVERT(4)
+      GEKIN = GETOT - AMASS
+      IF(GEKIN.LT.0.) GEKIN = 0.
+      CALL GEKBIN
+*
+* *** Additional EMC initialization
+*
+      IF (.NOT.LEONLY) CALL ERPINI
+*
+* *** Ready for tracking
+*
+      CALL ERTRGO
+*
+* *** Copy the final point and momentum into the output buffer
+*
+      DO 60 I = 1, 3
+         X2(I) = VECT(I)
+         P2(I) = VECT(7)*BACKTR*VECT(I+3)
+   60 CONTINUE
+*
+  777 FORMAT(/,4X,'Error in ERTRAK : particle type ', I4,
+     *        '  unknown in GEANT' )
+  778 FORMAT(/,4X,'Error in ERTRAK : Nul Momentum. Tracking stops now')
+  779 FORMAT(/,4X,'Error in ERTRAK : Inconsistent character options',
+     +                               '. Tracking stops now')
+  780 FORMAT(/,4X,'Error in ERTRAK : No prediction. Tracking stops now')
+*                                                           END ERTRAK
+  99  END
++DECK,  ERTRCH, T=FORT.
+*CMZ :          24/11/95  16.28.16  by  S.Ravndal
+*CMZ :  3.21/02 29/03/94  15.41.49  by  S.Giani
+*-- Author :
+      SUBROUTINE ERTRCH
+C.
+C.    ******************************************************************
+C.    *                                                                *
+C.    *    Average charged track is extrapolated by one step           *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRGO                                       *
+C.    *       Original routine : GTHADR                                *
+C.    *       Authors   M.Maire, E.Nagy  *********                     *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, GCBANK.
++CDE, GCONST.
++CDE, GCCUTS.
++CDE, GCPHYS.
++CDE, GCJLOC.
++CDE, GCKINE.
++CDE, GCMATE.
++CDE, GCMULO.
++CDE, GCTMED.
++CDE, GCTRAK.
++CDE, GCUNIT.
++CDE, ERTRIO.
++CDE, ERWORK.
+
++SELF, IF=SINGLE.
+      PARAMETER (EPSMAC=1.E-11)
++SELF, IF=-SINGLE, IF=-IBM.
+      PARAMETER (EPSMAC=5.E-6)
++SELF, IF=-SINGLE, IF=IBM.
+      PARAMETER (EPSMAC=5.E-5)
++SELF, IF=-SINGLE.
+      DOUBLE PRECISION GKR,DEMEAN,STOPP1,STOPP2,STOPMX,STOPRG,STOPC
+      DOUBLE PRECISION EKIPR
++SELF.
+      REAL VNEXT(6)
+      SAVE CFLD,CHARG2,RMASS,CUTPRO,IKCUT,STOPC
+C.
+C.    ------------------------------------------------------------------
+*
+*
+* *** Update local pointers if medium has changed
+*
+      IF (IUPD.EQ.0) THEN
+         IUPD  = 1
+         CHARG2 = CHARGE*CHARGE
+         IF (IPART.LE.3) THEN
+            CUTEK  = CUTELE
+            RMASS  = 1.
+            JRANG  = LQ(JMA-15)
+         ELSE IF (IPART.LE.6) THEN
+            CUTEK  = CUTMUO
+            RMASS  = 1.
+            JRANG  = LQ(JMA-16)
+         ELSE
+            CUTEK  = CUTHAD
+            RMASS  = PMASS/AMASS
+            JRANG  = LQ(JMA-16) + NEK1
+         ENDIF
+         CUTPRO = MAX(CUTEK*RMASS,ELOW(1))
+         IKCUT = GEKA*LOG10(CUTPRO) + GEKB
+         GKR   = (CUTPRO - ELOW(IKCUT))/(ELOW(IKCUT+1) - ELOW(IKCUT))
+         STOPC = (1.-GKR)*Q(JRANG+IKCUT) + GKR*Q(JRANG+IKCUT+1)
+         CFLD  = 0.
+         IF (FIELDM.NE.0.) CFLD = 3333.*DEGRAD*TMAXFD/ABS(FIELDM*CHARGE)
+      ENDIF
+*
+* *** Compute current step size
+*
+      STEP   = BIG
+      GEKRT1 = 1. - GEKRAT
+*
+* *** Step limitation due to energy loss (stopping range) ?
+*
+      IF (ILOSS*DEEMAX.GT.0.) THEN
+         STOPP1 = GEKRT1*Q(JRANG+IEKBIN) + GEKRAT*Q(JRANG+IEKBIN+1)
+         STOPMX = (STOPP1 - STOPC)/(RMASS*CHARG2)
+         EKF  = (1. - BACKTR*DEEMAX)*GEKIN*RMASS
+         IF (EKF.LT.ELOW(1))    EKF = ELOW(1)
+         IF (EKF.GE.ELOW(NEK1)) EKF = ELOW(NEK1)*0.99
+         IKF=GEKA*LOG10(EKF)+GEKB
+         GKR=(EKF-ELOW(IKF))/(ELOW(IKF+1)-ELOW(IKF))
+         STOPP2 = (1.-GKR)*Q(JRANG+IKF) + GKR*Q(JRANG+IKF+1)
+         SLOSP  = ABS (STOPP1 - STOPP2)
+         STEP   = SLOSP/(RMASS*CHARG2)
+      ENDIF
+*
+* *** Step limitation due to energy loss in magnetic field ?
+*
+      IF (IFIELD*FIELDM.NE.0.) THEN
+         SFIELD = CFLD*VECT(7)
+         IF (SFIELD.LT.STEP) STEP = SFIELD
+      ENDIF
+*
+* *** Compute point where to store error matrix
+*
+      LERST  = 0
+      STEPER = BIG
+      ASCL1  = BIG
+      DO 20 IPR = 1,NEPRED
+         STEPE  = BIG
+         IF (LELENG) STEPE = ERLENG(IPR) - SLENG
+         IF (LEPLAN) THEN
+            SCAL1 = 0.
+            SCAL2 = 0.
+            DO 18 I=1,3
+               SCAL1 = SCAL1 + ERPLO(I,4,IPR)*(ERPLO(I,3,IPR)-VECT(I))
+               SCAL2 = SCAL2 + ERPLO(I,4,IPR)*VECT(I+3)
+   18       CONTINUE
+            STEPE = SCAL1/SCAL2
+         ENDIF
+         IF (STEPE.LE.PREC) STEPE = BIG
+         IF (STEPE.LT.STEPER) THEN
+            STEPER = STEPE
+            INLIST = IPR
+            IF (LEPLAN) ASCL1  = ABS (SCAL1)
+         ENDIF
+   20 CONTINUE
+      IF (STEPER.LE.STEP)  THEN
+         STEP  = STEPER
+         LERST = 1
+      ENDIF
+*
+* *** Step limitation due to geometry ?
+*
+      LNEXT  = 0
+      IF (STEP.GE.0.95*SAFETY) THEN
+         CALL GTNEXT
+         IF (IGNEXT.NE.0) THEN
+            STEP   = SNEXT + PREC
+            LNEXT = 1
+            IF ((STEPER-SNEXT).GT.(2*PREC)) LERST = 0
+         ENDIF
+      ENDIF
+*
+* *** Linear transport when no field or very short step
+*
+      IF (IFIELD.EQ.0.OR.STEP.LE.2*PREC) THEN
+        IF (IGNEXT.NE.0) THEN
+          DO 25 I = 1,3
+            VECTMP = VECT(I) +STEP*VECT(I+3)
+            IF(VECTMP.EQ.VECT(I)) THEN
+*
+* *** Correct for machine precision
+*
+                  IF(VECT(I+3).NE.0.) THEN
+                     VECTMP =
+     +               VECT(I)+ABS(VECT(I))*SIGN(1.,VECT(I+3))*EPSMAC
+#if defined(DEBUG)
+                     WRITE(CHMAIL, 10000)
+                     CALL GMAIL(0,0)
+                     WRITE(CHMAIL, 10100) GEKIN, NUMED, STEP, SNEXT
+                     CALL GMAIL(0,0)
+10000 FORMAT(' Boundary correction in ERTRCH: ',
+     +       '    GEKIN      NUMED       STEP      SNEXT')
+10100 FORMAT(31X,E10.3,1X,I10,1X,E10.3,1X,E10.3,1X)
+#endif
+                  ENDIF
+            ENDIF
+            VOUT(I) = VECTMP
+   25     CONTINUE
+            INWVOL = 2
+            NMEC = NMEC +1
+            LMEC(NMEC) = 1
+        ELSE
+            DO 30 I = 1,3
+               VOUT(I)  = VECT(I) +STEP*VECT(I+3)
+   30       CONTINUE
+        ENDIF
+        DO 35 I = 4,6
+          VOUT(I)  = VECT(I)
+   35   CONTINUE
+        GOTO 74
+      END IF
+*
+* *** otherwise, swim particle in magnetic field
+*
+      NMEC = NMEC +1
+      LMEC(NMEC) = 4
+*
+   50 LERST = 0
+      LNEXT = 0
+      CALL GUSWIM (CHTR , STEP, VECT, VOUT)
+*
+*     When near to boundary, take proper action (cut-step,crossing...)
+      IF (STEP.GE.SAFETY) THEN
+         INEAR = 0
+         IF (IGNEXT.NE.0) THEN
+           DO 51 I = 1,3
+               VNEXT(I+3) = VECT(I+3)
+               VNEXT(I) = VECT(I) +SNEXT*VECT(I+3)
+   51      CONTINUE
+           DO 52 I = 1,3
+             IF (ABS(VOUT(I)-VNEXT(I)).GT.EPSIL) GO TO 55
+   52      CONTINUE
+           INEAR = 1
+         ENDIF
+*
+   55    CALL GINVOL (VOUT,ISAME)
+         IF (ISAME.EQ.0) THEN
+           IF ((INEAR.NE.0).OR.(STEP.LT.EPSIL)) THEN
+             INWVOL = 2
+             NMEC = NMEC +1
+             LMEC(NMEC) = 1
+             LNEXT = 1
+           ELSE
+*              Cut step
+             STEP = 0.5*STEP
+             IF (LMEC(NMEC).NE.24) THEN
+               NMEC = NMEC +1
+               LMEC(NMEC) = 24
+             ENDIF
+             GOTO 50
+           ENDIF
+         ENDIF
+      ENDIF
+*
+*
+*     preset plane reached  ?
+   74 CONTINUE
+      IF ((LEPLAN).AND.(STEP.GE.ASCL1)) THEN
+         SCAL3 = 0.
+         DO 28 I=1,3
+            SCAL3=SCAL3+ERPLO(I,4,INLIST)*(ERPLO(I,3,INLIST)-VOUT(I))
+   28    CONTINUE
+         ASCL3 = ABS(SCAL3)
+         SSCL1 = ASCL1/SCAL1
+         IF (SCAL3*SSCL1.LT. -PREC) THEN
+*            Cut step
+             STEP  = STEP*(ASCL1/(ASCL1+ASCL3))
+             NMEC  = NMEC +1
+             LMEC(NMEC) = 24
+             GOTO 50
+         ELSE
+           IF(ASCL3.LE.PREC) LERST = 1
+         ENDIF
+      ENDIF
+*
+      DO 75 I=1,6
+           VECT(I) = VOUT(I)
+   75 CONTINUE
+*
+      IF (LELENG.AND.(STEP.GE.STEPER)) LERST = 1
+*
+      SLENG = SLENG + STEP
+*
+* *** Now apply selected mechanisms
+*
+      IF (LNEXT.EQ.1) THEN
+          INWVOL = 2
+          NMEC = NMEC + 1
+          LMEC(NMEC) = 1
+      ENDIF
+*
+* *** apply energy loss : find the kinetic energy corresponding
+*      to the new stopping range = stopmx -/+ step
+*      (take care of the back tracking !)
+*
+      IF (ILOSS*DEEMAX.GT.0) THEN
+         NMEC = NMEC +1
+         LMEC(NMEC) = 3
+         CALL ERLAND (STEP,Z,A,DENS,VECT(7),GETOT,AMASS,DEDX2)
+         DEDX2  = DEDX2*CHARG2*CHARG2
+         STOPRG = STOPP1 - BACKTR*STEP*RMASS*CHARG2
+         IKF = IEKBIN
+         IF (BACKTR.LE.0.) THEN
+   95       IF (STOPRG.LT.Q(JRANG+IKF)) THEN
+               IKF = IKF - 1
+               IF (IKF.GT.1) GO TO 95
+            ENDIF
+         ELSE
+   96       IF (STOPRG.GE.Q(JRANG+IKF+1)) THEN
+               IKF = IKF + 1
+               IF (IKF.LT.NEK1) GO TO 96
+            ENDIF
+         ENDIF
+         GKR = (STOPRG - Q(JRANG+IKF)) / (Q(JRANG+IKF+1) - Q(JRANG+IKF))
+         EKIPR = (1. -GKR)*ELOW(IKF) + GKR*ELOW(IKF+1)
+         GEKINT =  EKIPR/RMASS
+         IF (GEKINT.GT.CUTEK) THEN
+            DESTEP = ABS (GEKIN - GEKINT)
+            GEKIN  = GEKINT
+            GETOT  = GEKIN + AMASS
+            VECT(7)= SQRT((GETOT+AMASS)*GEKIN)
+            CALL GEKBIN
+         ELSE
+            DESTEP = GEKINT
+            GEKIN  = 0.
+            GETOT  = AMASS
+            VECT(7)= 0.
+            INWVOL = 0
+            ISTOP  = 2
+            NMEC = NMEC + 1
+            LMEC(NMEC) = 30
+         ENDIF
+      ENDIF
+*
+* *** Propagate error matrix
+*
+      IF (.NOT. LEONLY) CALL ERPROP
+*
+* *** Store informations
+*
+      IF(LERST.EQ.1) THEN
+         NMEC = NMEC + 1
+         LMEC(NMEC) = 27
+         CALL ERSTOR
+      ENDIF
+*
+      END
++DECK,  ERTRGO, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERTRGO
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       Perform the tracking of the track                        *
+C.    *       Track parameters are in VECT                             *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRAK                                       *
+C.    *       Original routines : GTRACK + GTVOL                       *
+C.    *       Authors   M.Maire, E.Nagy  *********                     *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, GCBANK.
++CDE, GCJLOC.
++CDE, GCCUTS.
++CDE, GCONST.
++CDE, GCPHYS.
++CDE, GCKINE.
++CDE, GCFLAG.
++CDE, GCTMED.
++CDE, GCMATE.
++CDE, GCTRAK.
++CDE, GCVOLU.
++CDE, GCUNIT.
++CDE, GCNUM.
++CDE, ERTRIO.
++CDE, ERWORK.
+      COMMON/GCCHAN/LSAMVL
+      LOGICAL LSAMVL
+*
+*
+      DIMENSION CUTS(10),MECA(5,12)
+      EQUIVALENCE (CUTS(1),CUTGAM),(MECA(1,1),IPAIR)
+      DIMENSION NAMIN(15),NUMIN(15),NAMOUT(15),NUMOUT(15)
+*
+      SAVE PRECOR,NSTOUT
++SELF, IF=-SINGLE, IF=-IBM.
+      PARAMETER (EPSMAC=5.E-6)
++SELF, IF=-SINGLE, IF=IBM.
+      PARAMETER (EPSMAC=5.E-5)
++SELF, IF=SINGLE.
+      PARAMETER (EPSMAC=1.E-11)
++SELF.
+C.
+C.    ------------------------------------------------------------------
+*
+      NSTOUT = 0
+      EPSCUR = EPSMAC
+      LSAMVL = .FALSE.
+      SLENG  = 0.
+      ISTOP  = 0
+      NUMED  = 0
+      NUMOLD = 0
+      IUPD   = 0
+      NMEC   = 0
+      INGOTO = 0
+      INFROM = 0
+      SAFETY = 0.
+      MXNSTP = 1000
+      NSTEP  = 0
+*
+      CALL GMEDIA(VECT,NUMED)
+      IF (NUMED.EQ.0) GO TO 200
+*
+* *** Come back here each time we enter into a new volume
+*
+   10 CONTINUE
+*
+* *** Get tracking medium and material parameters
+      IF (NUMED.NE.NUMOLD) THEN
+         NUMOLD = NUMED
+         IUPD   = 0
+         JTM = LQ(JTMED- NUMED)
+         DO 20 I=1,5
+            NATMED(I)=IQ(JTM+I)
+  20     CONTINUE
+         NMAT   = Q(JTM + 6)
+         ISVOL  = Q(JTM + 7)
+         IFIELD = Q(JTM + 8)
+         FIELDM = Q(JTM + 9)
+         TMAXFD = Q(JTM + 10)
+         DMAXMS = Q(JTM + 11)
+         DEEMAX = Q(JTM + 12)
+         EPSIL  = Q(JTM + 13)
+         STMIN  = Q(JTM + 14)
+         PRECOR   = MIN(0.1*EPSIL, 0.0010)
+*
+         IF(LQ(JTM).EQ.0)THEN
+            IF(ISTPAR.NE.0)THEN
+               DO 30 I=1,10
+                  CUTS(I)=Q(JTMED+I)
+  30           CONTINUE
+               DO 40 I=1,12
+                  MECA(1,I)=Q(JTMED+10+I)
+  40           CONTINUE
+               ISTPAR=0
+            ENDIF
+         ELSE
+            JTMN=LQ(JTM)
+            DO 50 I=1,10
+               CUTS(I)=Q(JTMN+I)
+  50        CONTINUE
+            DO 60 I=1,12
+               MECA(1,I)=Q(JTMN+10+I)
+  60        CONTINUE
+            ILABS = Q(JTMN+10+21)
+            ISYNC = Q(JTMN+10+22)
+            ISTRA = Q(JTMN+10+23)
+            ISTPAR=1
+         ENDIF
+*
+         JMA  = LQ(JMATE- NMAT)
+         JPROB=LQ(JMA-4)
+         JMIXT=LQ(JMA-5)
+         DO 70 I=1,5
+  70     NAMATE(I)=IQ(JMA+I)
+         A    = Q(JMA + 6)
+         Z    = Q(JMA + 7)
+         DENS = Q(JMA + 8)
+         RADL = Q(JMA + 9)
+         ABSL = Q(JMA + 10)
+      ENDIF
+*
+      IF(LSAMVL) THEN
+*
+*       If now the particle is entering in the same volume where
+*       it was exiting from last step, and if it has done this for
+*       more than 5 times, we decrease the precision of tracking
+         NSTOUT=NSTOUT+1
+         IF(MOD(NSTOUT,5).EQ.0) THEN
+            EPSCUR=NSTOUT*EPSMAC
+            WRITE(CHMAIL,10000)ITRA,ISTAK,NTMULT,NAPART
+10000          FORMAT(' *** ERTRGO *** Boundary loop: track ',
+     +         I4,' stack ',I4,' NTMULT ',I5,1X,5A4)
+            CALL GMAIL(1,0)
+            WRITE(CHMAIL,10100) EPSCUR
+10100          FORMAT('                Precision now set to ',G10.3)
+            CALL GMAIL(0,1)
+         ENDIF
+      ELSE
+         NSTOUT = 0
+         EPSCUR = EPSMAC
+      ENDIF
+*
+* *** Initialize magnetic field for EMC package
+      HI(1) = 0.
+      HI(2) = 0.
+      HI(3) = 0.
+      IF (IFIELD.EQ.3) THEN
+         HI(3) = FIELDM
+      ELSEIF (IFIELD.NE.0) THEN
+         CALL GUFLD (VECT, HI)
+      ENDIF
+*
+* *** Control given to user at entrance of volume (INWVOL=1)
+      INWVOL = 1
+      NMEC   = 1
+      LMEC(1) = 29
+      STEP   = 0.
+      DESTEP = 0.
+*
+      IF((LEVOLU).AND.(SLENG.GT.0.)) THEN
+         IMEC = 0
+         CALL EVOLIO(NVLIN,NAMIN,NUMIN,NVLOUT,NAMOUT,NUMOUT)
+         DO 80 IPR =1,NEPRED
+            NAMPR = NAMEER(IPR)
+            NUMPR = NUMVER(IPR)
+            IOVPR = IOVLER(IPR)
+            IF (IOVPR.EQ.1) THEN
+               IV = IUCOMP(NAMPR,NAMIN ,NVLIN )
+               IF (IV.NE.0) THEN
+                  IF (NUMPR.EQ.0) NUMPR = NUMIN (IV)
+                  IF (NUMPR.EQ.NUMIN (IV)) THEN
+                     NMEC = NMEC + 1
+                     LMEC(NMEC) = 27
+                     INLIST = IPR
+                     CALL ERSTOR
+                  ENDIF
+               ENDIF
+            ELSE IF (IOVPR.EQ.2) THEN
+               IV = IUCOMP(NAMPR,NAMOUT,NVLOUT)
+               IF (IV.NE.0) THEN
+                  IF (NUMPR.EQ.0) NUMPR = NUMOUT(IV)
+                  IF (NUMPR.EQ.NUMOUT(IV)) THEN
+                     NMEC = NMEC + 1
+                     LMEC(NMEC) = 27
+                     INLIST = IPR
+                     CALL ERSTOR
+                  ENDIF
+               ENDIF
+            ENDIF
+*
+   80    CONTINUE
+*
+      ENDIF
+*
+      CALL EUSTEP
+      IF (ISTOP.NE.0) GO TO 999
+*
+* *** Particle is propagated up to the next volume boundary
+*
+      INWVOL=0
+*
+* *** Come back here after each step in the same volume
+ 100  IGNEXT = 0
+      INGOTO = 0
+      NLEVIN = NLEVEL
+      NMEC   = 0
+      STEP   = 0.
+      DESTEP = 0.
+      DEDX2  = 0.
+      PREC   = MAX(PRECOR,MAX(ABS(VECT(1)),ABS(VECT(2)),
+     +                        ABS(VECT(3)),SLENG)*EPSCUR)
+*
+      IF(CHARGE.NE.0.) THEN
+         CALL ERTRCH
+      ELSE
+         CALL ERTRNT
+      ENDIF
+*
+      NSTEP  = NSTEP + 1
+      IF (NSTEP.GT.MXNSTP) THEN
+         ISTOP = 99
+         NMEC  = NMEC + 1
+         LMEC(NMEC) = 30
+      ENDIF
+*
+      SAFETY = SAFETY - STEP
+      TLRAD  = TLRAD  + STEP/RADL
+      TLGCM2 = TLGCM2 + STEP*DENS
+*
+* *** Give control to user after each tracking step
+      CALL EUSTEP
+*
+      IF(ISTOP.NE.0) GO TO 999
+*
+* *** Renormalize direction cosines
+      CMOD = 1./SQRT(VECT(4)**2 + VECT(5)**2 + VECT(6)**2)
+      VECT(4) = VECT(4)*CMOD
+      VECT(5) = VECT(5)*CMOD
+      VECT(6) = VECT(6)*CMOD
+*
+      IF (INWVOL.EQ.0) GO TO 100
+*
+* *** Particle is leaving the volume (INWVOL=2) :
+*
+*     Save the current volume's tree before leaving the volume
+      IF(LEVOLU) CALL EVOLIO(NVLIN,NAMIN,NUMIN,NVLOUT,NAMOUT,NUMOUT)
+*
+*     find the new volume
+      IF (NLEVIN.GE.NLEVEL) THEN
+         INFROM = 0
+      ELSE
+         IF (NLEVIN.EQ.0) GO TO 200
+         INFROM = LINDEX (NLEVIN+1)
+      ENDIF
+      IF (NLEVIN.NE.NLEVEL) INGOTO = 0
+      NLEVEL = NLEVIN
+*
+      CALL GTMEDI (VECT,NUMED)
+      IF (NUMED.NE.0) THEN
+         SAFETY = 0.
+         GO TO 10
+      ENDIF
+*
+* *** Track outside setup, give control to user (INWVOL=3)
+  200 INWVOL= 3
+      ISTOP = 1
+      NMEC  = NMEC + 1
+      LMEC(NMEC) = 30
+      CALL EUSTEP
+ 999  CONTINUE
+      ILOSL = 0
+*
+      END
++DECK,  ERTRNT, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERTRNT
+C.
+C.    ******************************************************************
+C.    *                                                                *
+C.    *    Average neutral track is extrapolated by one step           *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRGO                                       *
+C.    *       Original routine : GTNINO                                *
+C.    *       Authors   M.Maire, E.Nagy  *********                     *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, ERTRIO.
++CDE, GCONST.
++CDE, GCTMED.
++CDE, GCTRAK.
+*
+* *** Compute point where to store error matrix
+*
+      STEPER = BIG
+      DO 20 IPR = 1,NEPRED
+         STEPE  = BIG
+         IF (LELENG) STEPE = ERLENG(IPR) - SLENG
+         IF (LEPLAN) THEN
+            SCAL1 = 0.
+            SCAL2 = 0.
+            DO 18 I=1,3
+               SCAL1 = SCAL1 + ERPLO(I,4,IPR)*(ERPLO(I,3,IPR)-VECT(I))
+               SCAL2 = SCAL2 + ERPLO(I,4,IPR)*VECT(I+3)
+   18       CONTINUE
+            STEPE = SCAL1/SCAL2
+         ENDIF
+         IF (STEPE.LE.PREC) STEPE = BIG
+         IF (STEPE.LT.STEPER) THEN
+            STEPER = STEPE
+            INLIST = IPR
+         ENDIF
+   20 CONTINUE
+*
+      STEP = BIG
+      CALL GTNEXT
+*
+      IF(STEPER.LT.SNEXT) THEN
+         STEP = STEPER
+         INWVOL = 0
+         IMEC   = 27
+         NMEC   = NMEC + 1
+         LMEC(NMEC) = IMEC
+      ELSE
+         STEP = SNEXT + PREC
+         INWVOL = 2
+         IMEC   = 1
+         NMEC   = NMEC + 1
+         LMEC(NMEC) = IMEC
+         IF ((STEPER-SNEXT).LE.(2*PREC)) THEN
+            IMEC   = 27
+            NMEC   = NMEC + 1
+            LMEC(NMEC) = IMEC
+         ENDIF
+      ENDIF
+*
+* *** Linear transport
+*
+      DO 25 I=1,3
+         VECT(I) = VECT(I) + STEP*VECT(I+3)
+   25 CONTINUE
+*
+      SLENG = SLENG + STEP
+*
+* *** Propagate error matrix
+*
+      IF (.NOT. LEONLY) CALL ERPROP
+*
+* *** Store informations
+*
+      IF(IMEC.EQ.27) CALL ERSTOR
+*
+      END
++DECK,  ERXYZC, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE ERXYZC
+C.
+C.    ******************************************************************
+C.    *                                                                *
+C.    *        Print track and volume parameters at current point      *
+C.    *                                                                *
+C.    *    ==>Called by : <USER,EUSTEP>                                *
+C.    *       Author    R.Brun  *********                              *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, GCKINE.
++CDE, GCTRAK.
++CDE, GCVOLU.
++CDE, GCUNIT.
++CDE, ERTRIO.
+*
+      DIMENSION MECNAM(20)
+      CHARACTER*4 KUN1,KUN2
+*
+      DO 10 I=1,NMEC
+         MEC=LMEC(I)
+         MECNAM(I)=NAMEC(MEC)
+   10 CONTINUE
+*
+      IF (SLENG.LE.0.) THEN
+         WRITE(CHMAIL,1000) (NAPART(I),I=1,5),NEPRED,CHOPTI
+         CALL GMAIL(0,0)
+         WRITE(CHMAIL,1100)
+         CALL GMAIL(0,0)
+      ENDIF
+*
+      R = SQRT(VECT(1)**2+VECT(2)**2)
+      CALL GEVKEV (DESTEP,DESU,KUN1)
+      CALL GEVKEV (GEKIN ,GEKU,KUN2)
+      WRITE(CHMAIL,2000)(VECT(I),I=1,3),R,NAMES(NLEVEL),NUMBER(NLEVEL)
+     +      ,SLENG,STEP,DESU,KUN1,GEKU,KUN2,(MECNAM(I),I=1,NMEC)
+      CALL GMAIL(0,0)
+C
+ 1000 FORMAT(' =====> starting GEANE tracking for  ',5A4,' NEPRED =',I3,
+     +       '  with options : ',A8)
+ 1100 FORMAT('      X         Y         Z         R      NAME  NUMBER',
+     +'   SLENG      STEP      DESTEP     GEKIN    MECHANISMS')
+ 2000 FORMAT(1X,4F10.4,2X,A4,2X,I4,2X,2F10.4,F7.1,A4,F9.3,A4,2X,
+     +          6(A4,1X))
+*
+      END
++DECK,  EUFILL, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE EUFILL (N, EIN, XLF)
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *    User routine to fill the input values of the commons :      *
+C.    *               /EROPTS/, /EROPTC/ and /ERTRIO/ for CHOPT = 'L'  *
+C.    *         N     Number of predictions where to store results     *
+C.    *         EIN   Input error matrix                               *
+C.    *         XLF   Defines the tracklengths which if passed the     *
+C.    *                      result should be stored                   *
+C.    *                                                                *
+C.    *                                                                *
+C.    *    ==>Called by : USER (before calling ERTRAK)                 *
+C.    *       Author    M.Maire, E.Nagy  *********                     *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, ERTRIO.
+      DIMENSION EIN(15), XLF(N)
+*
+      NEPRED = MIN0 (N, MXPRED)
+*
+      CALL UCOPY (EIN(1), ERRIN(1),  15)
+      CALL UCOPY (XLF(1), ERLENG(1), NEPRED)
+*
+*                                                           END EUFILL
+  99  END
++DECK,  EUFILP, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE EUFILP (N, EIN, PLI, PLF)
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *    User routine to fill the input values of the commons :      *
+C.    *               /EROPTS/, /EROPTC/ and /ERTRIO/ for CHOPT = 'P'  *
+C.    *         N     Number of predictions where to store results     *
+C.    *         EIN   Input error matrix (in the 'Plane' system )      *
+C.    *         PLI   Defines the start plane                          *
+C.    *                      PLI(3,1) - and                            *
+C.    *                      PLI(3,2) - 2 unit vectors in the plane    *
+C.    *         PLF   Defines the end plane                            *
+C.    *                      PLF(3,1,I) - and                          *
+C.    *                      PLF(3,2,I) - 2 unit vectors in the plane  *
+C.    *                      PLF(3,3,I) - point on the plane           *
+C.    *                                   at intermediate point I      *
+C.    *                                                                *
+C.    *    ==>Called by : USER (before calling ERTRAK)                 *
+C.    *       Author    M.Maire, E.Nagy  *********                     *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, ERTRIO.
+      DIMENSION EIN(15), PLF(3,3,N), PLI(3,2),PWORK(3)
+*
+      NEPRED = MIN0 (N, MXPRED)
+*
+      CALL UCOPY (EIN(1), ERRIN(1), 15)
+      CALL UCOPY (PLI(1,1), ERPLI(1,1), 6)
+      DO 5 I = 1, NEPRED
+         CALL UCOPY (PLF(1,1,I), ERPLO(1,1,I), 9)
+         CALL CROSS (PLF(1,1,I), PLF(1,2,I), PWORK(1))
+         PNORM = VMOD(PWORK,3)
+         CALL VSCALE(PWORK,PNORM,ERPLO(1,4,I),3)
+    5 CONTINUE
+*
+*                                                           END EUFILP
+  99  END
++DECK,  EUFILV, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE EUFILV (N, EIN, CNAMV, NUMV, IOVL)
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *    User routine to fill the input values of the commons :      *
+C.    *               /EROPTS/, /EROPTC/ and /ERTRIO/ for CHOPT = 'V'  *
+C.    *         N     Number of predictions where to store results     *
+C.    *         EIN   Input error matrix                               *
+C.    *        CNAMV  Volume name of the prediction                    *
+C.    *        NUMV   Volume number (if 0 = all volumes)               *
+C.    *        IOVL   = 1  prediction when entering in the volume      *
+C.    *               = 2  prediction when leaving the volume          *
+C.    *                                                                *
+C.    *    ==>Called by : USER (before calling ERTRAK)                 *
+C.    *       Author    M.Maire, E.Nagy  *********                     *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, ERTRIO.
+      DIMENSION EIN(15), NUMV(N), IOVL(N)
+      CHARACTER * 4 CNAMV(N)
+*
+      NEPRED = MIN0 (N, MXPRED)
+*
+      CALL UCOPY (EIN(1), ERRIN(1),  15)
+      DO I=1,NEPRED
+        CALL UCTOH (CNAMV(I),NAMEER(I),4,4)
+      ENDDO
+      CALL UCOPY (NUMV(1),NUMVER(1),NEPRED)
+      CALL UCOPY (IOVL(1),IOVLER(1),NEPRED)
+*
+*                                                           END EUFILV
+  99  END
++DECK,  EUSTEP, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE EUSTEP
+*
++CDE, GCFLAG.
+*
+*
+      IF (IDEBUG*ISWIT(2).NE.0) CALL ERXYZC
+*
+      END
++DECK,  EVOLIO, T=FORT.
+* Revision 1.1.1.1  1996/03/06 15:37:35  mclareni
+* Add geane321 source directories
+
+      SUBROUTINE EVOLIO (NVLIN,NAMIN,NUMIN,NVLOUT,NAMOUT,NUMOUT)
+*
+C.    ******************************************************************
+C.    *                                                                *
+C.    *    Called with INWVOL=2 this routine save the volume's tree    *
+C.    *                                                                *
+C.    *    Called with INWVOL=1 this routine returns                   *
+C.    *             - the list of volumes (and number) left            *
+C.    *             - the list of volumes (and number) entered         *
+C.    *                                                                *
+C.    *    ==>Called by : ERTRGO                                       *
+C.    *       Author    M.Maire  *********                             *
+C.    *                                                                *
+C.    ******************************************************************
+C.
++CDE, GCVOLU.
++CDE, GCTRAK.
+*
+      PARAMETER (NVMX=15)
+      COMMON/OLDTRE/NLVOLD,NAMOLD(NVMX),NUMOLD(NVMX),IOFLAG(NVMX),KONLY
+*
+      DIMENSION NAMIN(NVMX),NUMIN(NVMX),NAMOUT(NVMX),NUMOUT(NVMX)
+*
+*
+      NVLOUT = 0
+      NVLIN  = 0
+      IF(INWVOL.EQ.0) RETURN
+      IF(NLEVEL.EQ.0) RETURN
+*
+* *** Save the tree when leaving a volume
+*
+      IF(INWVOL.EQ.2) THEN
+         NLVOLD = NLEVEL
+         KONLY  = 1
+         DO 1 ILV =1,NLEVEL
+           NAMOLD(ILV) = NAMES (ILV)
+           NUMOLD(ILV) = NUMBER(ILV)
+           IOFLAG(ILV) = 2
+           IF(GONLY(ILV).NE.1.) KONLY = 0
+    1    CONTINUE
+         RETURN
+      ENDIF
+*
+* *** Entering in a new volume : compare the trees
+*
+      IF(INWVOL.NE.1) RETURN
+*
+* *** Simplest case : old tree is 'ONLY'
+*
+      IF(KONLY.EQ.1) THEN
+        NLMIN = MIN(NLEVEL,NLVOLD)
+        NL    = 0
+   10   NL    = NL + 1
+        IF(NL.GT.NLMIN) GO TO 12
+        IF((NAMES (NL).EQ.NAMOLD(NL)).AND.
+     *     (NUMBER(NL).EQ.NUMOLD(NL))) GO TO 10
+*
+   12   CONTINUE
+        IF(NL.LE.NLVOLD) THEN
+          DO 14 IL = NL,NLVOLD
+            NVLOUT = NVLOUT + 1
+            NAMOUT(NVLOUT) = NAMOLD(IL)
+            NUMOUT(NVLOUT) = NUMOLD(IL)
+   14     CONTINUE
+        ENDIF
+*
+        IF(NL.LE.NLEVEL) THEN
+          DO 16 IL = NL,NLEVEL
+            NVLIN  = NVLIN  + 1
+            NAMIN (NVLIN ) = NAMES (IL)
+            NUMIN (NVLIN ) = NUMBER(IL)
+   16     CONTINUE
+        ENDIF
+*
+        RETURN
+      ENDIF
+*
+* *** Special case for 'NOT ONLY' volumes
+*
+      IF(KONLY.EQ.0) THEN
+         DO 24 IL1 = 1,NLEVEL
+           DO 22 IL2 = 1,NLVOLD
+              IF((NAMES (IL1).EQ.NAMOLD(IL2)).AND.
+     *           (NUMBER(IL1).EQ.NUMOLD(IL2))) THEN
+                   IOFLAG(IL2) = 0
+                   GO TO 24
+              ENDIF
+   22      CONTINUE
+           NVLIN  = NVLIN  + 1
+           NAMIN (NVLIN ) = NAMES (IL1)
+           NUMIN (NVLIN ) = NUMBER(IL1)
+   24    CONTINUE
+*
+         DO 26 IL2 = 1,NLVOLD
+           IF(IOFLAG(IL2).EQ.0) GO TO 26
+           NVLOUT = NVLOUT + 1
+           NAMOUT(NVLOUT) = NAMOLD(IL2)
+           NUMOUT(NVLOUT) = NUMOLD(IL2)
+   26    CONTINUE
+*
+      ENDIF
+*
+      END
++PATCH, PAMEND.
+*- THIS IS THE LAST LINE OF THE PAM FILE geant321

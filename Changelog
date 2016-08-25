@@ -1,0 +1,71 @@
+Changelog
+
+ BiESAT --> Bi207 Energy Spectra Analysis Toolkit
+==================================================
+
+12.10.25
++ plotting the individual K, L, and M shell gaussians
+  for the 976keV peak.
+
+09.07.17
+~ updated the 09.05.29 changes because the version on
+  my laptop was more recent than the version on
+  my pc at UCL.
+
+09.07.07
+~ officially now called BiESAT.cxx
+~ tidy up the macro a bit
+
+09.06.04
+~ change first sigma aprox. to be 15% of adc position
+~ change lower bounds on 976keV of the 1st fit
+
+09.05.29
+~ changed around many fitting parameters to fit lowres better
+~ changed how calib is calculated from the gamma fit
++ add subtraction fit at the end of the program
+
+09.05.26
++ root > 5.17 now works
+~ changed the way calib is calculated for lowres and thick
+~ changed around some fitting settings
+
+09.05.22
++ delete func; to end of macro, seems to stop crashing
++ shifting the gamma hist to match beta at 500 compton
+~ let exp0 free for first beta fit
+
+08.11.03
++ use data2root.cxx to convert to rootfile
+- NO MORE SUPPORT FOR RAW DATA FILES!!!
+
+08.10.31
+~ changed char[]'s to *char[]'s
+~ fixed a bug when sped < s482 
++ combined in the rootfile method of reading data
+
+08.10.22
+~ changed the way the hists from rootfile are readin
+~ changed offset calculatin to use 976-position and global calib
+~ fixed the problem with scaling the histos!
+
+08.09.30
++ tweaked parLimits for fitting gamma and multi-gamma
++ fixed the fit to account for multi scattering comptons
++ fixed parameters and if statements for thick and lowres options
+~ changed gamma fit to use full fit
+
+08.09.18
++ added condition to make sure compt1000 is less than gaus1000
+
+08.09.09
++ added 'thick' option that deals with multi compton scattering
++ added in a section that normalizes the gamma spectra
+
+08.09.08
+- removed previous 'subtracted the Eloss contribution' NOT VALID
++ subtracted the Eloss contribution to sigma from measurement
+
+08.09.05
+- removed the gamma energy loss factor
+

@@ -1,0 +1,9 @@
+DBruns
+-----------------------
+Place your rootfiles and config files in here after you have modified
+the config file for the correct compton edge positon and 976keV CE
+peak position. BiESAT looks in this directory by default for the run-
+number you specify as the macro option:
+in ROOT
+> .x BiESAT.cxx ("runXXXX")
+

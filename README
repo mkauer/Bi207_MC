@@ -1,0 +1,80 @@
+README
+
+ BiESAT --> Bi207 Energy Spectra Analysis Toolkit
+==================================================
+
+WARNING! this macro has been tested using ROOT versions
+'5.14.00e' to '5.24.00' so there is a possibility of 
+things breaking when using other versions of ROOT.
+
+for example fitting do the following in ROOT:
+root[0] .x BiESAT.cxx("run195")
+
+assuming you have done a 'cvs checkout BiESAT' this
+should work, ie the fit should go through all interations
+and produce a final result of the fit.
+
+the .conf file is of most importance to the user.
+first create a rootfile from your pedistal, beta,
+and gamma run data files, in ROOT:
+
+root[0] .x data2root.cxx("ped-file","beta-file","gamma-file",chan)
+
+chan --> either 1 or 9, 1 for lowres and 9 for hihes using VME
+         with VME DAQ, lowres --> 0-7 and hires --> 8-15
+         but chan 0 is damaged meaning chan 8 is also damaged
+
+the generated files will be placed in ./DBtemp because the user
+must first edit the .conf file and confirm the generated files
+are correct. the user MUST edit the generated .conf file for the
+correct 400keV compton edge position and 976keV CE peak position
+in ADC bins (see exampls in ./DBruns). some other settings must
+be adjusted to help BiESAT understand what it is trying to fit.
+
+describe --> a string of information describing your setup
+             this is useful for when other people want a quick
+             overview of your setup and this way you don't have
+             to go rumaging through your logbook.
+
+pedrun   --> is the pedistal run file name
+betarun  --> is the beta+gamma run file name
+gammarun --> is the gamma run file name
+
+gamma    --> is the 400keV compton edge position in ADC bins
+beta     --> is the 976keV peak position in ADC bins
+Eloss    --> is the estimated energy loss of the electrons
+             through the air and reflective material
+
+lowres   --> if the resolution is worse than ~8-9% set this
+             to '1' because then BiESAT changes the fitting
+             procedure a bit (too much to explain here).
+thick    --> if your scint is thicker than ~5cm set this to
+             '1' because BiESAT changes the fitting procedure
+             a bit (too much to explain here).
+fitopt   --> add any ROOT fitting options here you might want
+             to test out (from TH1::Fit).
+             http://root.cern.ch/root/html/TH1.html#TH1:Fit
+rebin    --> sets the rebin for the histograms
+maxbin   --> the maximum bin in your histograms (4000 if VME,
+             2000 if CAMAC etc.)
+
+once you have all the correct settins, copy over the files
+into the ./DBruns directory. the files should include:
+name.C, name.conf, name.png, name.root
+
+then in ROOT do:
+
+root[0] .x BiESAT("name")
+
+and hopfully everything will work.
+
+
+update
+------------------
+if you have files in the ./DBsimu folder, then do:
+root[0] .x BiESAT("name",1)
+
+and if you have files in the ./DBtemp folder, then do:
+root[0] .x BiESAT("name",2)
+
+

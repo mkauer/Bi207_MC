@@ -1,0 +1,146 @@
++PATCH,UGEOM. ! -*- fortran -*-
++DECK,GEOMPAR.
+*-- +KEEP,HITPAR.
+c      CHARACTER*4 NAMESH(7),CHNMSV1(3),CHNMSV2(2)
+c      DIMENSION ORIGH(7),FACT(7),NBITSH(7),NBITSV1(3),NBITSv2(2)
+*--
+c      DATA NAMESH/'X   ','Y   ','Z   ',
+c     +       'TOF ','E   ','IPRT','ELOS'/
+c      DATA NBITSH/7*32/ , ORIGH/3*1000.,4*0./
+c      DATA FACT/3*10.,100.,1.0E8,1.,1.0E8/
+c      DATA CHNMSV1 /'CALO','SBC ','SBR '/
+c      DATA NBITSV1 /16,16,16/
+c      DATA CHNMSV2 /'SCTB','SBP '/
+c      DATA NBITSV2 /16,16/
+
+
+*--
+*--       SENSITIVE DETECTOR SETS
+*--       -----------------------
+*--
+*--   SCINTILLATORS   (DETECTOR SET 'EMCL')
+
+*--   -------------
+*--   1 X       X COORDINATE OF THE TRACK (M.R.S.)
+*--             AT THE ENTRY INTO THE VOLUME OR AT CREATION POINT ( cm )
+*--   2 Y       Y COORDINATE OF THE TRACK (M.R.S.)
+*--             AT THE ENTRY INTO THE VOLUME OR AT CREATION POINT ( cm )
+*--   3 Z       Z COORDINATE OF THE TRACK (M.R.S.)
+*--             AT THE ENTRY INTO THE VOLUME OR AT CREATION POINT ( cm )
+*--   8 TOF     T.O.F. OF THE TRACK AT THE ENTRY INTO THE VOLUME OR
+*--                                 AT CREATION POINT ( ns )
+*--   9 E       KINETIC ENERGY OF THE TRACK AT THE ENTRY INTO THE VOLUME OR
+*--                                         AT CREATION POINT ( GeV )
+*--   10  ELOS  ENERGY LOSS OF THE TRACK INSIDE THE VOLUME ( GeV )
+*--             WARNING:  IF MORE THAN ONE PARTICLE DEPOSIT NENERGY
+*--                       IN THE BLOCK, SOME OF THE INFORMATIONS MAY NOT
+*--                       BE VALID (X,Y,Z,TOF,E)
+*--                       IN THIS SITUATION ELOSS IS THE TOTAL ENERGY DEPOSITED
+*--                       IN THE BLOCK AND TOF MAY NOT BE THE T.O.F. OF THE
+*--                       FIRST PARTICLE HITING THE BLOCK!
+*--
+
++KEEP,SNEMODIM.
+
+       REAL motvol(3)
+       REAL scintvol(3)
+       REAL alvol(3)
+c       REAL vacvol(3)
+       REAL esrvol(3)
+
++SEQ, GCONST.
+       real AARY(2)
+       real ZARY(2)
+       real WMAT(2)
+      
+*-- Mother dimentions
+       DATA motvol /50.,50.,50./
+*-- Aluminum dimentions
+       DATA alvol /20.,20.,0.1/  ! 0.2 cm = 2 mm
+*-- Scintillator dimensions
+c       DATA scintvol /2.5,2.5,1./  ! 5x5x2 cm
+       DATA scintvol /10.,10.,7.5/  ! 20x20x15 cm (simulate large hex block)
+*-- Vacuum dimensions
+c       DATA vacvol /1.,1.,1./
+*-- Wrap dimensions
+c       DATA esrvol /20.,20.,0.00225/  ! 0.0045 = 45 um ESR
+       DATA esrvol /20.,20.,0.0006/   ! 0.0012 = 12 um Al Mylar
+       
++KEEP,MIXTS.
+*-- Material mixture definition PURE POLYSTYRENE :  C6H5CH=CH2
+      
+       DATA INPAR /-2/ ! -n means numbers by atomic proportions (not weights)
+       DATA AARY /1.00794,12.011/
+       DATA ZARY /1.0, 6.0/
+       DATA WMAT /8., 8./
+       DATA DENS /1.032/
+
++KEEP,MEDNUMB.
+      DATA MDSC/1/
+      DATA MDFOIL/2/
+      DATA MDAIR/3/
+      DATA MDAL/4/
+c      DATA MDVAC/5/
+      DATA MDESR/5/
+
++DECK,SUGEOM.
+	subroutine UGEOM
++SEQ,SNEMODIM,MIXTS,MEDNUMB.
+
+c        REAL PAR(10)
+        INTEGER IVOL
+
+
+*-- Standard material definition	
+	CALL GMATE
+*-- My material definition
+        CALL GSMIXT(21,'POLY',AARY,ZARY,DENS,INPAR,WMAT)
+
+*-- Media definition
+        FIELDM = 0.
+        IFIELD = 0.
+        STEMAX = 1.E10
+        DEEMAX = 0.01
+        TFMAX = 5.
+        EPSIL = 0.00001
+        STMIN = 0.0001
+
+	call GSTMED(MDSC,'PLAST',21,1,IFIELD,FIELDM,TMAXFD,
+     +          STEMAX,DEEMAX,EPSIL,STMIN,0,0)
+
+	call GSTMED(MDAIR,'AIRMED',15,0,IFIELD,FIELDM,TMAXFD,
+     +          STEMAX,DEEMAX,EPSIL,STMIN,0,0)
+
+c        call GSTMED(MDVAC,'VACUUM',16,0,IFIELD,FIELDM,TMAXFD,
+c     +          STEMAX,DEEMAX,EPSIL,STMIN,0,0)
+
+        call GSTMED(MDAL,'ALUM',9,0,IFIELD,FIELDM,TMAXFD,
+     +          STEMAX,DEEMAX,EPSIL,STMIN,0,0)
+       
+        call GSTMED(MDESR,'ESR',9,0,IFIELD,FIELDM,TMAXFD,
+     +          STEMAX,DEEMAX,EPSIL,STMIN,0,0)
+       
+
+c-- Book the volumes
+        call gsvolu ('AIRV','BOX ',MDAIR,motvol,3,IVOL)
+        call gsvolu ('SCNT','BOX ',MDSC,scintvol,3,IVOL)
+        call gsvolu ('ESRV','BOX ',MDESR,esrvol,3,IVOL)
+c        call gsvolu ('ALVO','BOX ',MDAL,alvol,3,IVOL)
+c        call gsvolu ('VACV','BOX ',MDVAC,vacvol,3,IVOL)
+
+c-- Place the volumes: foil+sc_walls inside mother volume
+        call gspos ('SCNT',1,'AIRV',0.0,0.0,0.0,0,ONLY)
+        call gspos ('ESRV',1,'AIRV',0.0,0.0,7.8,0,ONLY)
+c        call gspos ('ALVO',1,'AIRV',0.0,0.0,5.2,0,ONLY)
+c        call gspos ('VACV',1,'AIRV',0.0,0.0,2.2,0,ONLY)
+
+c-- Print parameters for volume + medium
+        call gpvolu(0)
+        call gptmed(0)
+
+c-- close the geometry description
+	call GGCLOS
+	print *,'UGINIT finished'
+
+	END
+c*****************************************************

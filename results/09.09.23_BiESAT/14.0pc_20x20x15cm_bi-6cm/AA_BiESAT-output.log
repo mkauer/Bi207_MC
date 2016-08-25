@@ -1,0 +1,407 @@
+
+Processing BiESAT.cxx("14.0pc_20x20x15cm_bi-6cm",2)...
+Looking in ==> ./DBtemp/ for config file ==> 14.0pc_20x20x15cm_bi-6cm.conf
+
+
+ ===>  14.0pc_20x20x15cm_bi-6cm
+
+	+++++++++++++++++++++++++++++++++++++++++++ 
+	  USING FIT MODE  ==>  hi-resolution 
+	  USING FIT MODE  ==>  thick scint 
+	+++++++++++++++++++++++++++++++++++++++++++ 
+	  Preliminary Calib    ==>  1.03041
+	  Assumed Energy Loss  ==>  17
+	+++++++++++++++++++++++++++++++++++++++++++ 
+
+
+
+	 NO PEDESTAL FILE FOUND ==> using a vaule = 0
+
+
+	 bins = 4000  hmin = 0  hmax = 4000
+	 nbins = 4000  nhmin = 0  nhmax = 4000
+
+	 bins = 4000  hmin = 0  hmax = 4000
+	 nbins = 4000  nhmin = 0  nhmax = 4000
+
+
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 looking for BETA max bin between 350 - 453 bins 
+	 looking for BETA 500keV compton between 371 - 432 bins 
+	 looking for GAMMA max bin between 350 - 453 bins 
+	 looking for GAMMA 500keV compton between 347 - 408 bins 
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+	 SHIFTING --> MCgamma --> -9.75734 bins
+
+
+===========================================================
+Normalizing the Gamma and Beta histograms...
+
+	 Integrate Gamma between  ==>  618.247 - 721.288
+	 equals bin numbers       ==>  310 - 361
+	 Area under gamma hist    ==>  69930
+
+	 Integrate Beta between   ==>  618.247 - 721.288
+	 equals bin numbers       ==>  310 - 361
+	 Area under beta hist     ==>  74142
+
+	 Gamma scale factor       ==>  1.06023 
+
+===========================================================
+
+
+
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 looking for 500keV compton between 370.948 - 432.773 bins 
+	 looking for 500keV multi-compton between 412.165 - 556.422 bins 
+	 looking for 1000keV compton between 721.288 - 1133.45 bins 
+	 looking for 1000keV multi-compton between 803.721 - 875.85 bins 
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+	==============================================================
+	 Fitting the Gamma spectra for the 1-th time
+	 Looking for the gamma ==> 803.721 - 947.979
+	 Looking for the multi-comp bump ==> 886.154 - 1051.02
+	==============================================================
+
+
+ FCN=461.204 FROM MIGRAD    STATUS=CALL LIMIT   6646 CALLS        6647 TOTAL
+                     EDM=0.163539    STRATEGY= 1  ERROR MATRIX UNCERTAINTY  24.2 per cent
+  EXT PARAMETER                APPROXIMATE        STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  exp0         2.99314e+02   2.21423e+01  -1.07575e-03   3.68224e+02
+   2  exp1         2.06748e-03   2.37715e-04   1.44039e-03  -6.58251e+02
+   3  Cn500        3.81592e+02   2.68853e+01   1.52703e-02   1.39207e+02
+   4  Ce500        4.12123e+02   1.26482e+00  -2.59260e-03   1.86477e+01
+   5  Cs500        2.30551e+01   7.02016e-01  -5.67038e-04  -1.84471e+01
+   6  Css500       4.25615e-03   2.98488e-04  -1.00295e-02   2.08020e+02
+   7  CGn500       4.32872e+00   2.22357e-01  -3.18139e-04   1.22883e+03
+   8  CGe500       4.57224e+02   2.19666e+00  -7.88395e-03  -2.73801e+01
+   9  CGs500       6.53977e+01   1.19471e+00   5.96104e-03   4.04061e+01
+  10  Cn1000       9.64430e+01   3.55162e+00  -2.61477e-03   2.64420e+02
+  11  Ce1000       8.60473e+02   3.36100e+00   4.33286e-03   2.66990e+00
+  12  Cs1000       3.36932e+01   2.39331e+00   3.00009e-03  -6.68299e+00
+  13  Css1000      2.09757e-03   1.04182e-04   6.84050e-03   1.47812e+02
+  14  CGn1000      7.88834e+00   2.00690e-01   1.36771e-04   4.24441e+02
+  15  CGe1000      9.13505e+02   2.23922e+00   8.18949e-03   6.22306e+00
+  16  CGs1000      9.21035e+01   1.10348e+00  -4.92316e-04   1.78710e+02
+  17  Gn482        0.00000e+00     fixed    
+  18  Ge482        1.00000e-02     fixed    
+  19  Gs482        1.00000e-02     fixed    
+  20  Gc482        1.00000e-02     fixed    
+  21  Gn976        0.00000e+00     fixed    
+  22  Ge976        1.00000e-02     fixed    
+  23  Gs976        1.00000e-02     fixed    
+  24  Gc976        1.00000e-02     fixed    
+  25  offset       1.02172e+02   9.75229e+00   1.30245e-02   6.97211e+01
+
+
+++++++++++ COMPTON FIT RESULTS +++++++++++++
+	 N500         = 381.592
+	 N1000        = 96.443
+	 cedge500     = 412.123
+	 cedge1000    = 860.473
+	 csigma500    = 23.0551
+	 csigma1000   = 33.6932
+	 c2sigma500   = 0.00425615
+	 c2sigma1000  = 0.00209757
+	 Nratio500    = 4.32872
+	 gausmean500  = 457.224
+	 gaussig500   = 65.3977
+	 Nratio1000   = 7.88834
+	 gausmean1000 = 913.505
+	 gaussig1000  = 92.1035
+	 Calib        = 0.983102
+
+++++++++++ ESTIMATED PARAMETERS ++++++++++++
+	 Ek976        = 942.795
+	 s976         = 60.1784
+	 Ek482        = 457.142
+	 s482         = 29.1793
+
+
+ FCN=476.217 FROM MIGRAD    STATUS=CONVERGED    1319 CALLS        1320 TOTAL
+                     EDM=7.64107e-09    STRATEGY= 1  ERROR MATRIX UNCERTAINTY   1.9 per cent
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  exp0         1.21656e-08   1.93865e+01   1.70482e-06** at limit **
+   2  exp1         2.06748e-03     fixed    
+   3  Cn500        3.87279e+02   1.63872e+00  -3.01392e-07  -1.76880e-01
+   4  Ce500        4.12123e+02     fixed    
+   5  Cs500        2.30551e+01     fixed    
+   6  Css500       4.25615e-03     fixed    
+   7  CGn500       4.10307e+00   6.43056e-02   1.70564e-05  -2.15152e-03
+   8  CGe500       4.57224e+02     fixed    
+   9  CGs500       6.53977e+01     fixed    
+  10  Cn1000       9.64430e+01     fixed    
+  11  Ce1000       8.60473e+02     fixed    
+  12  Cs1000       3.36932e+01     fixed    
+  13  Css1000      2.09757e-03     fixed    
+  14  CGn1000      7.88834e+00     fixed    
+  15  CGe1000      9.13505e+02     fixed    
+  16  CGs1000      9.21035e+01     fixed    
+  17  Gn482        7.90054e+01   1.58258e+01  -1.48486e-07  -1.05374e-01
+  18  Ge482        4.58591e+02   3.29155e+00  -1.08308e-05   3.61106e-04
+  19  Gs482        2.27397e+01   3.76456e+00   4.44113e-06   2.05768e-04
+  20  Gc482        5.50254e-01   1.06228e-01  -5.94640e-05   9.29960e-04
+  21  Gn976        8.93826e+01   1.71500e+00   6.68920e-09  -1.48977e+00
+  22  Ge976        9.64258e+02   1.06835e+00   2.17030e-06   3.21972e-04
+  23  Gs976        6.03265e+01   1.22635e+00  -1.73068e-06  -9.63858e-04
+  24  Gc976        8.47859e-01   6.31496e-02   8.87524e-06   9.85336e-04
+  25  offset       1.76581e+02   2.34937e+00  -1.22726e-06  -7.48601e-03
+
+
+ ROUGH FIT 1
+======================================================================
+14.0pc_20x20x15cm_bi-6cm
+	 Pedestal      = 
+	 Beta File     = MCbeta
+	 Gamma File    = MCgamma
+
+ Energy Calibration from Ek976-Ek482 = 1.01243 keV/ch
+	 Calib 976-482 = 0.987719
+	 Calib 482 keV = 0.987719 +/- 0.106228
+	 Calib 976 keV = 0.987719 +/- 0.0631496
+
+ 976keV peak fit 
+	 976keV Mean   = 964.258 +/- 1.06835 = 976.248 keV
+	 976keV Sigma  = 60.3265 +/- 1.22635 = 61.0766 keV
+	 FWHM @ 976keV = 14.7272 +/- 0.299383 % 
+	 FWHM @ 1MeV   = 14.5513 +/- 0.295806 % 
+
+ 482keV peak fit 
+	 482keV Mean   = 458.591 +/- 3.29155 = 464.293 keV
+	 482keV Sigma  = 22.7397 +/- 3.76456 = 23.0225 keV
+	 FWHM @ 482keV = 11.6725 +/- 1.93239 % 
+	 FWHM @ 1MeV   = 7.95357 +/- 1.31671 % 
+
+ 976keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = 0 bins = 0 keV
+	 New 976 Mean  = 964.258 bins = 976.248 keV
+	 New 976 Sigma = 60.3265 bins = 61.0766 keV
+	 FWHM @ 976keV = 14.7272 +/- 0.299383 % 
+	 FWHM @ 1MeV   = 14.5513 +/- 0.295806 % 
+
+ 482keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = 0 bins = 0 keV
+	 New 482 Mean  = 458.591 bins = 464.293 keV
+	 New 482 Sigma = 22.7397 bins = 23.0225 keV
+	 FWHM @ 482keV = 11.6725 +/- 1.93239 % 
+	 FWHM @ 1MeV   = 7.95357 +/- 1.31671 % 
+
+ FIT RESULTS, chi2/ndf = 476.217 / 441 = 1.07986
+======================================================================
+
+
+ FCN=512.432 FROM MIGRAD    STATUS=CONVERGED     194 CALLS         195 TOTAL
+                     EDM=3.80872e-09    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  exp0         1.21656e-08     fixed    
+   2  exp1         2.06748e-03     fixed    
+   3  Cn500        3.87279e+02     fixed    
+   4  Ce500        4.12123e+02     fixed    
+   5  Cs500        2.30551e+01     fixed    
+   6  Css500       4.25615e-03     fixed    
+   7  CGn500       4.10307e+00     fixed    
+   8  CGe500       4.57224e+02     fixed    
+   9  CGs500       6.53977e+01     fixed    
+  10  Cn1000       9.64430e+01     fixed    
+  11  Ce1000       8.60473e+02     fixed    
+  12  Cs1000       3.36932e+01     fixed    
+  13  Css1000      2.09757e-03     fixed    
+  14  CGn1000      7.88834e+00     fixed    
+  15  CGe1000      9.13505e+02     fixed    
+  16  CGs1000      9.21035e+01     fixed    
+  17  Gn482        7.15905e+01   7.80763e+00   7.55148e-06  -9.29244e-02
+  18  Ge482        4.57359e+02   3.76766e+00   4.49547e-04   3.10400e-04
+  19  Gs482        2.63575e+01   2.44482e+00   5.84042e-03  -2.64065e-05
+  20  Gc482        9.87719e-01     fixed    
+  21  Gn976        9.31728e+01   8.56762e-01   7.46119e-07   9.94659e-01
+  22  Ge976        9.62308e+02   5.39208e-01   2.90372e-05  -2.01557e-03
+  23  Gs976        5.76879e+01   5.42641e-01   1.91887e-04   1.94401e-03
+  24  Gc976        9.87719e-01     fixed    
+  25  offset       1.76581e+02     fixed    
+
+
+ ROUGH FIT 2
+======================================================================
+14.0pc_20x20x15cm_bi-6cm
+	 Pedestal      = 
+	 Beta File     = MCbeta
+	 Gamma File    = MCgamma
+
+ Energy Calibration from Ek976-Ek482 = 1.01602 keV/ch
+	 Calib 976-482 = 0.98423
+	 Calib 482 keV = 0.98423 +/- 0
+	 Calib 976 keV = 0.98423 +/- 0
+
+ 976keV peak fit 
+	 976keV Mean   = 962.308 +/- 0.539208 = 977.727 keV
+	 976keV Sigma  = 57.6879 +/- 0.542641 = 58.6122 keV
+	 FWHM @ 976keV = 14.1116 +/- 0.132741 % 
+	 FWHM @ 1MeV   = 13.9536 +/- 0.131254 % 
+
+ 482keV peak fit 
+	 482keV Mean   = 457.359 +/- 3.76766 = 464.688 keV
+	 482keV Sigma  = 26.3575 +/- 2.44482 = 26.7798 keV
+	 FWHM @ 482keV = 13.566 +/- 1.25833 % 
+	 FWHM @ 1MeV   = 9.24769 +/- 0.857779 % 
+
+ 976keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -18.4314 bins = -18.7268 keV
+	 New 976 Mean  = 962.308 bins = 977.727 keV
+	 New 976 Sigma = 57.6879 bins = 58.6122 keV
+	 FWHM @ 976keV = 14.1116 +/- 0.132741 % 
+	 FWHM @ 1MeV   = 13.9536 +/- 0.131254 % 
+
+ 482keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -18.4314 bins = -18.7268 keV
+	 New 482 Mean  = 457.359 bins = 464.688 keV
+	 New 482 Sigma = 26.3575 bins = 26.7798 keV
+	 FWHM @ 482keV = 13.566 +/- 1.25833 % 
+	 FWHM @ 1MeV   = 9.24769 +/- 0.857779 % 
+
+ FIT RESULTS, chi2/ndf = 512.432 / 449 = 1.14127
+======================================================================
+
+
+ FCN=509.838 FROM MIGRAD    STATUS=CONVERGED     148 CALLS         149 TOTAL
+                     EDM=3.58671e-10    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  exp0         1.21656e-08     fixed    
+   2  exp1         2.06748e-03     fixed    
+   3  Cn500        3.87279e+02     fixed    
+   4  Ce500        4.12123e+02     fixed    
+   5  Cs500        2.30551e+01     fixed    
+   6  Css500       4.25615e-03     fixed    
+   7  CGn500       4.10307e+00     fixed    
+   8  CGe500       4.57224e+02     fixed    
+   9  CGs500       6.53977e+01     fixed    
+  10  Cn1000       9.64430e+01     fixed    
+  11  Ce1000       8.60473e+02     fixed    
+  12  Cs1000       3.36932e+01     fixed    
+  13  Css1000      2.09757e-03     fixed    
+  14  CGn1000      7.88834e+00     fixed    
+  15  CGe1000      9.13505e+02     fixed    
+  16  CGs1000      9.21035e+01     fixed    
+  17  Gn482        7.17825e+01   7.86230e+00   7.53502e-06   5.87189e-03
+  18  Ge482        4.57315e+02   3.75634e+00   4.48230e-04  -4.79414e-04
+  19  Gs482        2.62876e+01   2.55854e+00   4.11541e-03   3.44870e-05
+  20  Gc482        9.84230e-01     fixed    
+  21  Gn976        9.31204e+01   8.55127e-01   7.46120e-07  -2.82117e-01
+  22  Ge976        9.62348e+02   5.39080e-01   2.90160e-05  -2.18409e-04
+  23  Gs976        5.77105e+01   5.41963e-01   3.33880e-04   6.23348e-05
+  24  Gc976        9.84230e-01     fixed    
+  25  offset       1.76581e+02     fixed    
+
+
+ FINAL FIT RESULTS
+======================================================================
+14.0pc_20x20x15cm_bi-6cm
+	 Pedestal      = 
+	 Beta File     = MCbeta
+	 Gamma File    = MCgamma
+
+ Energy Calibration from Ek976-Ek482 = 1.01595 keV/ch
+	 Calib 976-482 = 0.984302
+	 Calib 482 keV = 0.984302 +/- 0
+	 Calib 976 keV = 0.984302 +/- 0
+
+ 976keV peak fit 
+	 976keV Mean   = 962.348 +/- 0.53908 = 977.696 keV
+	 976keV Sigma  = 57.7105 +/- 0.541963 = 58.6309 keV
+	 FWHM @ 976keV = 14.1166 +/- 0.132569 % 
+	 FWHM @ 1MeV   = 13.9583 +/- 0.131083 % 
+
+ 482keV peak fit 
+	 482keV Mean   = 457.315 +/- 3.75634 = 464.608 keV
+	 482keV Sigma  = 26.2876 +/- 2.55854 = 26.7068 keV
+	 FWHM @ 482keV = 13.5314 +/- 1.317 % 
+	 FWHM @ 1MeV   = 9.22327 +/- 0.897693 % 
+
+ 976keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -18.4027 bins = -18.6962 keV
+	 New 976 Mean  = 962.348 bins = 977.696 keV
+	 New 976 Sigma = 57.7105 bins = 58.6309 keV
+	 FWHM @ 976keV = 14.1166 +/- 0.132569 % 
+	 FWHM @ 1MeV   = 13.9583 +/- 0.131083 % 
+
+ 482keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -18.4027 bins = -18.6962 keV
+	 New 482 Mean  = 457.315 bins = 464.608 keV
+	 New 482 Sigma = 26.2876 bins = 26.7068 keV
+	 FWHM @ 482keV = 13.5314 +/- 1.317 % 
+	 FWHM @ 1MeV   = 9.22327 +/- 0.897693 % 
+
+ FIT RESULTS, chi2/ndf = 509.838 / 448 = 1.13803
+======================================================================
+
+
+
+-------------------------------------------------------------------------------------
+USAGE ==> quickfit_976kev.cxx (hist_ptr, fit_min, fit_mid, fit_max, rebin, plot name)
+-------------------------------------------------------------------------------------
+
+ FCN=339.125 FROM MIGRAD    STATUS=CONVERGED      72 CALLS          73 TOTAL
+                     EDM=1.09762e-12    STRATEGY= 1  ERROR MATRIX UNCERTAINTY   2.1 per cent
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  Constant     1.54906e+03   8.08541e+00   3.64616e-03   1.07335e-07
+   2  Mean         9.78883e+02   4.37482e-01  -3.41614e-05  -1.80018e-06
+   3  Sigma        7.39729e+01   4.29897e-01  -9.03074e-07   8.15544e-04
+ FCN=103.853 FROM MIGRAD    STATUS=CONVERGED      76 CALLS          77 TOTAL
+                     EDM=7.78044e-10    STRATEGY= 1  ERROR MATRIX UNCERTAINTY   1.4 per cent
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  Constant     1.59392e+03   1.02556e+01  -2.30297e-03  -4.40797e-06
+   2  Mean         9.77631e+02   5.31819e-01  -1.01087e-03  -3.80891e-05
+   3  Sigma        6.82081e+01   9.37058e-01  -3.27129e-05   9.82797e-04
+ MINUIT WARNING IN PARAM DEF
+ ============== LIMITS ON PARAM1 TOO FAR APART.
+ FCN=277.343 FROM MIGRAD    STATUS=CONVERGED     141 CALLS         142 TOTAL
+                     EDM=2.41432e-08    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  Gn976        1.91269e+02   1.29934e+00   7.47699e-07  -1.12401e+01
+   2  Ge976        9.62854e+02   4.15206e-01   2.07381e-06  -1.02321e-01
+   3  Gs976        6.15174e+01   4.94398e-01   1.32439e-05   3.64036e-02
+   4  Gc976        1.05235e+00     fixed    
+
+
+	 Resolution    =  15.0143 % 
+    	 Res @ 1MeV    =  14.3617 % 
+	 976keV Energy =  914.958 keV 
+	 Energy Loss   =  17 keV 
+
+
+-----------------------------------------------------------------------------------
+USAGE ==> quickfit_landau_976.cxx (hist_ptr, Ge976, Gs976, Eloss, rebin, plot name)
+-----------------------------------------------------------------------------------
+ FCN=5337.92 FROM MIGRAD    STATUS=CONVERGED     569 CALLS         570 TOTAL
+                     EDM=5.45514e-11    STRATEGY= 1  ERROR MATRIX UNCERTAINTY   1.8 per cent
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  Gn976        1.95271e+02   1.07587e+00   3.37359e-09  -6.17574e-01
+   2  Ge976        9.66522e+02   2.92157e-01  -8.83341e-09  -3.97233e-03
+   3  Gs976        5.78195e+01   2.59910e-01  -1.09364e-06  -3.84183e-04
+   4  Gc976        1.03590e+00     fixed    
+   5  Ln976        1.16123e+02   4.74505e+00  -4.26543e-10  -2.35508e-02
+   6  Eloss        1.70000e+01     fixed    
+   7  Ls976        5.00000e+02   1.77689e+01  -5.36649e-05** at limit **
+   8  offset       8.54311e-13   4.80560e-01   3.70371e-06** at limit **
+
+
+	 Resolution    =  14.0582 % 
+    	 Res @ 1MeV    =  13.5793 % 
+	 976keV Energy =  933.029 keV 
+	 Energy Loss   =  17 keV 
+
+
+(Int_t)0

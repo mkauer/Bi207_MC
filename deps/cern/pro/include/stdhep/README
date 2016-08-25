@@ -1,0 +1,47 @@
+   Product name : STDHEP
+       Versions : v5_01
+ Product Number : PM0091
+           Date : 10-Jun-2002
+  Origin/Author : Lynn Garren, Paul Lebrun
+     Maintainer : Lynn Garren
+  Support Level : 5*
+
+Description:
+   STDHEP contains a set of translation routines which convert
+   Herwig, Jetset, Isajet, or QQ events to and from the standard
+   HEP event format.  STDHEP also contains utility routines
+   to work with the HEPEVT common block and a set of I/O routines.
+   The HEPEVT common block allows 4000 particles per event.
+
+   Mcfio, an xdr I/O interface package, is included with stdhep.
+   C bindings of the mcfio interface routines are in libstdhepC.a.
+   
+   StdHep C++ code is in CLHEP release 1.8 and later.
+
+   StdHep uses include files from the event generators.
+   These include files are subject to change.  Also, the generator
+   particle numbering is subject to change.  Thus, we cannot
+   guarantee that StdHep will work with releases of the generators
+   other than those it was built with.
+
+Stdhep v5_01 is built with:
+   Isajet v7_51 (OSF1 requires v7_51a)
+   Herwig v6_4a
+   Lund v6_203a (pythia plus related generators)
+   QQ v9_2b
+
+Usage:
+   % setup stdhep
+   See $STDHEP_DIR/example.
+
+Rebuilding the libraries:
+
+   cd $STDHEP_DIR/src
+   gmake clean (to get rid of the old libraries)
+   gmake all
+   gmake DEBUG=-g all (to build debug libraries)
+   optional:  gmake cleanobjs (to get rid of *.o files)
+
+Documentation:
+   Documentation is available at http://www-pat.fnal.gov/stdhep.html
+   or in $STDHEP_DIR/doc.

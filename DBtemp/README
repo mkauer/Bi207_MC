@@ -1,0 +1,11 @@
+DBtemp
+-----------------------
+When you run 'data2root.cxx' the rootfile and config file etc
+are placed in here. You must edit the config file to the correct
+400keV compton edge position and 976keV CE peak position and
+describe your setup conditions simular to the examples given in
+the config file.
+
+Then copy the files over to DBruns or DBsimu where BiESAT can 
+find them and use them.
+

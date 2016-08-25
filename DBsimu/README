@@ -1,0 +1,14 @@
+DBsimu
+-----------------------
+Place your rootfiles and config files in here after you have modified
+the config file for the correct compton edge positon and 976keV CE
+peak position. 
+
+This directory is for simulated data so that it is kept seperate from
+the real data in DBruns.
+
+BiESAT looks in DBruns by default so you must specify '1' as the 2nd
+option when you run the macro:
+in ROOT
+> .x BiESAT.cxx ("runXXXX",1)
+

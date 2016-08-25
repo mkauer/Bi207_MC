@@ -1,0 +1,15 @@
+Getting these old cern binaries and libs to work can be a pain on newer
+x86_64 machines.
+
+I managed to get everything working on SL6.3 x86_64 machine by installing
+the following packages:
+
+compat-gcc-34.x86_64
+compat-gcc-34-c++.x86_64
+compat-glibc.x86_64
+binutils-devel.i686
+glibc-devel.i686
+libX11-devel.i686
+compat-libf2c-34.i686
+compat-libf2c-34.x86_64
+compat-gcc-34-g77.x86_64

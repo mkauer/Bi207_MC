@@ -1,0 +1,50 @@
+                             Release 2005
+                           ^^^^^^^^^^^^^^^
+Last update: 27 March 2005
+For details:
+ http://cern.ch/cernlib/news/cernlib.news2005.html
+ 
+News:
+=====
+End news.
+=========
+----------------------------------------------------------------------
+Installation Notes
+----------------------------------------------------------------------
+
+The installation has been made using the Cern Linux slc4_ia32_gcc345
+operating system with the gcc 3.4.5 compiler set, i.e.
+ Linux 2.6.9-34.EL.cernsmp #1.
+
+Compilers / Libraries:
+ g77  : GNU Fortran (GCC) 3.4.5 20051201 (Red Hat 3.4.5-2)
+ gcc  : gcc (GCC) 3.4.5 20051201 (Red Hat 3.4.5-2)
+  (obtained with gcc --version and g77 --version )
+
+ Binutils (ld -V) : GNU ld version 2.14.90.0.4 20030523
+ libc ( ls -l /lib/libc.so.6 ) : libc-2.3.2.so
+ 
+This release uses "industry standard" tools --
+imake, gmake, makedepend and cpp (C preprocessor).
+
+ Compiler options used:
+
+   in general :
+ g77 -c -O -fno-automatic -fno-second-underscore -fugly-complex 
+     -DCERNLIB_LINUX -DCERNLIB_UNIX -DCERNLIB_LNX -DCERNLIB_QMGLIBC
+ gcc -c -O1 -fomit-frame-pointer -DFUNCPROTO=15 -DNARROWPROTO
+    -DCERNLIB_LINUX -DCERNLIB_UNIX -DCERNLIB_LNX -DCERNLIB_QMGLIBC
+
+However, compilation options differ for some packages and individual
+routines; all details are documented in the Imakefiles.
+
+In particular, geant321 uses the additional flag -DCERNLIB_BLDLIB.
+
+Packlib and pawlib were built using OpenMotif Version 2.2.3.
+Stdhep is V5.01 for compatibility.
+Lapack3 and blas are links to the system versions in /usr/lib.
+
+If you want to rebuild some parts please consult the README file for the
+sources, and the installation guide available at
+
+ http://cern.ch/cernlib > INSTALL 

@@ -1,0 +1,10 @@
+TODO
+
+ BiESAT --> Bi207 Energy Spectra Analysis Toolkit
+==================================================
+
+- need to impliment a lookup table for energy losses
+  because 482keV electron looses more energy than
+  the 976keV electron and this alters the extracted
+  calib.
+

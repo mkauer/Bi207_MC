@@ -1,0 +1,123 @@
+======================================================================
+10.0pc_20x20x15cm_bi-6cm
+	 Pedestal      = 
+	 Beta File     = MCbeta
+	 Gamma File    = MCgamma
+
+ Energy Calibration from Ek976-Ek482 = 1.00065 keV/ch
+	 Calib 976-482 = 0.999352
+	 Calib 482 keV = 0.999352 +/- 0.0496126
+	 Calib 976 keV = 0.999352 +/- 0.0170438
+
+ 976keV peak fit 
+	 976keV Mean   = 963.317 +/- 0.430219 = 963.941 keV
+	 976keV Sigma  = 45.1213 +/- 0.557817 = 45.1505 keV
+	 FWHM @ 976keV = 11.026 +/- 0.13631 % 
+	 FWHM @ 1MeV   = 10.8254 +/- 0.13383 % 
+
+ 482keV peak fit 
+	 482keV Mean   = 459.876 +/- 2.61749 = 460.174 keV
+	 482keV Sigma  = 29.2566 +/- 2.17255 = 29.2755 keV
+	 FWHM @ 482keV = 14.9758 +/- 1.11208 % 
+	 FWHM @ 1MeV   = 10.159 +/- 0.75439 % 
+
+ 976keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = 0 bins = 0 keV
+	 New 976 Mean  = 963.317 bins = 963.941 keV
+	 New 976 Sigma = 45.1213 bins = 45.1505 keV
+	 FWHM @ 976keV = 11.026 +/- 0.13631 % 
+	 FWHM @ 1MeV   = 10.8254 +/- 0.13383 % 
+
+ 482keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = 0 bins = 0 keV
+	 New 482 Mean  = 459.876 bins = 460.174 keV
+	 New 482 Sigma = 29.2566 bins = 29.2755 keV
+	 FWHM @ 482keV = 14.9758 +/- 1.11208 % 
+	 FWHM @ 1MeV   = 10.159 +/- 0.75439 % 
+
+ FIT RESULTS, chi2/ndf = 610.218 / 456 = 1.3382
+======================================================================
+
+
+======================================================================
+10.0pc_20x20x15cm_bi-6cm
+	 Pedestal      = 
+	 Beta File     = MCbeta
+	 Gamma File    = MCgamma
+
+ Energy Calibration from Ek976-Ek482 = 1.0008 keV/ch
+	 Calib 976-482 = 0.999201
+	 Calib 482 keV = 0.999201 +/- 0
+	 Calib 976 keV = 0.999201 +/- 0
+
+ 976keV peak fit 
+	 976keV Mean   = 963.233 +/- 0.378129 = 964.002 keV
+	 976keV Sigma  = 44.9596 +/- 0.398442 = 44.9956 keV
+	 FWHM @ 976keV = 10.9875 +/- 0.0973734 % 
+	 FWHM @ 1MeV   = 10.7879 +/- 0.0956047 % 
+
+ 482keV peak fit 
+	 482keV Mean   = 457.843 +/- 1.82713 = 458.209 keV
+	 482keV Sigma  = 29.0488 +/- 1.38937 = 29.072 keV
+	 FWHM @ 482keV = 14.9354 +/- 0.714343 % 
+	 FWHM @ 1MeV   = 10.11 +/- 0.483547 % 
+
+ 976keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -4.99838 bins = -5.00238 keV
+	 New 976 Mean  = 963.233 bins = 964.002 keV
+	 New 976 Sigma = 44.9596 bins = 44.9956 keV
+	 FWHM @ 976keV = 10.9875 +/- 0.0973734 % 
+	 FWHM @ 1MeV   = 10.7879 +/- 0.0956047 % 
+
+ 482keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -4.99838 bins = -5.00238 keV
+	 New 482 Mean  = 457.843 bins = 458.209 keV
+	 New 482 Sigma = 29.0488 bins = 29.072 keV
+	 FWHM @ 482keV = 14.9354 +/- 0.714343 % 
+	 FWHM @ 1MeV   = 10.11 +/- 0.483547 % 
+
+ FIT RESULTS, chi2/ndf = 605.527 / 455 = 1.33083
+======================================================================
+
+
+======================================================================
+10.0pc_20x20x15cm_bi-6cm
+	 Pedestal      = 
+	 Beta File     = MCbeta
+	 Gamma File    = MCgamma
+
+ Energy Calibration from Ek976-Ek482 = 1.0008 keV/ch
+	 Calib 976-482 = 0.999205
+	 Calib 482 keV = 0.999205 +/- 0
+	 Calib 976 keV = 0.999205 +/- 0
+
+ 976keV peak fit 
+	 976keV Mean   = 963.234 +/- 0.378132 = 964.001 keV
+	 976keV Sigma  = 44.9627 +/- 0.39841 = 44.9985 keV
+	 FWHM @ 976keV = 10.9882 +/- 0.0973654 % 
+	 FWHM @ 1MeV   = 10.7886 +/- 0.0955969 % 
+
+ 482keV peak fit 
+	 482keV Mean   = 457.845 +/- 1.82707 = 458.209 keV
+	 482keV Sigma  = 29.0478 +/- 1.38165 = 29.0709 keV
+	 FWHM @ 482keV = 14.9349 +/- 0.710372 % 
+	 FWHM @ 1MeV   = 10.1096 +/- 0.480859 % 
+
+ 976keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -4.99713 bins = -5.0011 keV
+	 New 976 Mean  = 963.234 bins = 964.001 keV
+	 New 976 Sigma = 44.9627 bins = 44.9985 keV
+	 FWHM @ 976keV = 10.9882 +/- 0.0973654 % 
+	 FWHM @ 1MeV   = 10.7886 +/- 0.0955969 % 
+
+ 482keV Scint Quench and Pedestal Sigma Contribution 
+	 Scint Quench  = -4.99713 bins = -5.0011 keV
+	 New 482 Mean  = 457.845 bins = 458.209 keV
+	 New 482 Sigma = 29.0478 bins = 29.0709 keV
+	 FWHM @ 482keV = 14.9349 +/- 0.710372 % 
+	 FWHM @ 1MeV   = 10.1096 +/- 0.480859 % 
+
+ FIT RESULTS, chi2/ndf = 605.489 / 455 = 1.33075
+======================================================================
+
+

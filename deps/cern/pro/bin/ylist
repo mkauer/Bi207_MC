@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+#  ylist preprocessor to handle car files, too.
+#
+#  Gunter Folger, 14-May-92
+#
+#-----------------------------------------------
+#
+#  patchy modules are in
+   [ -z "$CERN"           ] && CERN="/cern"
+   [ -z "$PATCHY_VERSION" ] && PATCHY_VERSION="4.15"
+   PATCHY=$CERN/patchy/$PATCHY_VERSION/bin
+ 
+ftmp=/tmp/`echo $0 | awk -F/ '{ print $NF }'`$$
+ 
+if [ $# -eq 0 ] ; then
+   cat << EoI
+ YLIST    executing
+ Options  :     Eject hon, Start page, Wylbur lines, 0,1,2,3
+ Default ext. : .pam   -    .lis
+ Stream names : PAM   OPT   PRINT
+y>
+EoI
+   read pam rest
+else
+   pam=$1
+   shift
+   rest=$*
+fi
+ 
+file=`echo $pam  | awk -F/ '{ print $NF }'`
+ext=`echo $file  | awk -F\. '{ print $2 }'`
+ 
+if [ "$ext" = "" ] ; then
+   if [ -f ${pam}.pam ] ; then
+      ext="pam"
+   elif [ -f ${pam}.car ] ; then
+        ext="car"
+   else
+      echo "YLIST: no input file ${pam}.pam or ${pam}.car found"
+      exit 1
+   fi
+elif [ ! -f ${pam} ] ; then
+      echo "YLIST: no input file ${pam} found"
+      exit 1
+fi
+ 
+if [ "$ext" != "pam" ] ; then
+   echo " Preparing temporary binary PAM file, ...wait"
+   ${PATCHY}/ytobin $pam $ftmp.pam - - ${ftmp}.lis .GO  > /dev/null
+#
+   pam="$ftmp"
+fi
+${PATCHY}/ylistb $pam ${rest-}
+[ -f ${ftmp}.pam ] && rm ${ftmp}.pam
+[ -f ${ftmp}.lis ] && rm ${ftmp}.lis
+exit
+ 
